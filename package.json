@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run curriculum:check && astro build",
+    "build": "npm run curriculum:generate && astro build",
     "preview": "astro preview",
     "curriculum:generate": "tsx scripts/generate-curriculum.ts",
     "curriculum:check": "tsx scripts/generate-curriculum.ts --check",
