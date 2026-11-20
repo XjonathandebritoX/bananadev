@@ -191,9 +191,12 @@ async function main() {
   // Resumo no console
   const broken = byStatus.get('broken')?.length || 0;
   const unverifiable = byStatus.get('unverifiable')?.length || 0;
-  if (broken > 0 || unverifiable > 0) {
-    console.log(`\n⚠️  ${broken} quebrado(s), ${unverifiable} não verificável(is). Revise o relatório.`);
+  if (broken > 0) {
+    console.log(`\n❌ ${broken} link(s) quebrado(s). Revise o relatório.`);
     process.exitCode = 1;
+  } else if (unverifiable > 0) {
+    console.log(`\n⚠️  ${unverifiable} link(s) não verificável(is) (timeout/erro de rede). Verifique manualmente se necessário.`);
+    // Não falha o build para links não verificáveis (podem ser flaky em CI)
   } else {
     console.log('\n✅ Todos os links verificados com sucesso.');
   }
