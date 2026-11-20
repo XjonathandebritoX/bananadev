@@ -1,6 +1,6 @@
-# Como contribuir com o BananaDev
+# Como contribuir com o #BananaDev
 
-Obrigado por querer contribuir! O BananaDev é um projeto educacional open source mantido pela comunidade. Toda ajuda é bem-vinda: correções de links, melhorias de acessibilidade, novos materiais verificados, traduções, ajustes na plataforma, revisão de pull requests.
+Obrigado por querer contribuir! O #BananaDev é um projeto educacional open source mantido pela comunidade. Toda ajuda é bem-vinda: correções de links, melhorias de acessibilidade, novos materiais verificados, traduções, ajustes na plataforma, revisão de pull requests.
 
 ## Antes de começar
 

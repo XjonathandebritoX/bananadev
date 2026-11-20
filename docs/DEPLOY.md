@@ -1,6 +1,6 @@
-# Guia de Deploy — BananaDev
+# Guia de Deploy — #BananaDev
 
-Este documento descreve o processo de deploy verificado para o BananaDev.
+Este documento descreve o processo de deploy verificado para o #BananaDev.
 
 ## Visão geral
 

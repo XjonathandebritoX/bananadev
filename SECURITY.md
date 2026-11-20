@@ -1,8 +1,8 @@
-# Política de Segurança do BananaDev
+# Política de Segurança do #BananaDev
 
 ## Versões suportadas
 
-Como o BananaDev é uma aplicação estática sem back-end, banco de dados ou autenticação, não há versões com suporte de segurança prolongado. A versão publicada no `main` é a que recebe correções.
+Como o #BananaDev é uma aplicação estática sem back-end, banco de dados ou autenticação, não há versões com suporte de segurança prolongado. A versão publicada no `main` é a que recebe correções.
 
 ## Reportar uma vulnerabilidade
 

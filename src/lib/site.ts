@@ -1,10 +1,10 @@
 /**
- * Identidade e configuração institucional do BananaDev.
+ * Identidade e configuração institucional do #BananaDev.
  * Todos os links internos passam por `url()` para respeitar a base de deploy.
  */
 
 export const SITE = {
-  name: 'BananaDev',
+  name: '#BananaDev',
   fullName: '#BananaDev',
   subtitle: 'Formação autodidata em Análise e Desenvolvimento de Sistemas',
   description:
@@ -17,7 +17,7 @@ export const SITE = {
   pulls: 'https://github.com/XjonathandebritoX/bananadev/pulls',
   license: 'MIT',
   contentLicense: 'CC BY 4.0',
-  author: 'BananaDev contributors',
+  author: '#BananaDev contributors',
 } as const;
 
 export const NAV = [
@@ -43,7 +43,7 @@ export const FOOTER_NAV = [
   {
     title: 'Projeto',
     links: [
-      { href: '/sobre/', label: 'Sobre o BananaDev' },
+      { href: '/sobre/', label: 'Sobre o #BananaDev' },
       { href: '/manifesto/', label: 'Manifesto' },
       { href: '/progresso/', label: 'Meu progresso' },
       { href: '/privacidade/', label: 'Privacidade e dados' },

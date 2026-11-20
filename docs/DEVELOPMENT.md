@@ -1,11 +1,11 @@
-# Guia de Desenvolvimento — BananaDev
+# Guia de Desenvolvimento — #BananaDev
 
 Este documento explica como configurar, executar, testar e manter o projeto localmente.
 
 ## Estrutura do projeto
 
 ```
-BananaDev/
+#BananaDev/
 ├── public/                 # Assets estáticos copiados para dist/
 │   ├── brand/              # Logo, favicons, og.png, manifest.webmanifest
 │   └── fonts/              # (vazio — fontes ficam em src/assets/fonts/)
@@ -40,7 +40,7 @@ BananaDev/
 │       └── global.css      # Design system completo (tokens, componentes)
 ├── scripts/
 │   └── generate-curriculum.ts  # Gera src/data/curriculum.generated.json a partir do README
-├── .bananadev-work-BananaDev/  # (fora do repo) Ambiente isolado: node_modules, caches, ferramentas
+├── .bananadev-work-#BananaDev/  # (fora do repo) Ambiente isolado: node_modules, caches, ferramentas
 ├── astro.config.mjs
 ├── tsconfig.json
 ├── vitest.config.ts
@@ -60,7 +60,7 @@ BananaDev/
 ## Ferramentas necessárias
 
 - **Node.js** ≥ 20.3.0 (recomendado: usar [Volta](https://volta.sh/) ou [fnm](https://github.com/Schniz/fnm))
-- **npm** (vem com Node) — cache isolado em `.bananadev-work-BananaDev/cache/npm`
+- **npm** (vem com Node) — cache isolado em `.bananadev-work-#BananaDev/cache/npm`
 - **Git**
 - **Python 3.11+** e **uv** (opcional, só para rodar o Website-Downloader localmente)
 
@@ -72,22 +72,22 @@ git clone https://github.com/XjonathandebritoX/bananadev.git
 cd bananadev
 
 # 2. Crie/ative o ambiente isolado (uma vez por máquina)
-mkdir -p ../.bananadev-work-BananaDev/npm-env
-cp package.json ../.bananadev-work-BananaDev/npm-env/
-cd ../.bananadev-work-BananaDev/npm-env
+mkdir -p ../.bananadev-work-#BananaDev/npm-env
+cp package.json ../.bananadev-work-#BananaDev/npm-env/
+cd ../.bananadev-work-#BananaDev/npm-env
 npm install --no-audit --no-fund
 cd ../../bananadev
 
 # 3. Link do node_modules isolado
-ln -sfn ../.bananadev-work-BananaDev/npm-env/node_modules node_modules
-cp ../.bananadev-work-BananaDev/npm-env/package-lock.json package-lock.json
+ln -sfn ../.bananadev-work-#BananaDev/npm-env/node_modules node_modules
+cp ../.bananadev-work-#BananaDev/npm-env/package-lock.json package-lock.json
 
 # 4. Verifique
 npm run curriculum:check   # valida README vs dados gerados
 npm run check              # typecheck + astro check
 ```
 
-> **Importante**: O `node_modules` fica **fora do repositório** (em `.bananadev-work-BananaDev/`). O link simbólico `node_modules -> ../.bananadev-work-BananaDev/npm-env/node_modules` resolve os módulos sem versionar dependências.
+> **Importante**: O `node_modules` fica **fora do repositório** (em `.bananadev-work-#BananaDev/`). O link simbólico `node_modules -> ../.bananadev-work-#BananaDev/npm-env/node_modules` resolve os módulos sem versionar dependências.
 
 ## Comandos principais
 
@@ -138,7 +138,7 @@ npm run check              # typecheck + astro check
 1. Substitua `public/brand/original/bananadev-logo.png` (mantendo proporção 1:1, transparência, PNG).
 2. Rode o script de geração de assets:
    ```bash
-   cd ../.bananadev-work-BananaDev
+   cd ../.bananadev-work-#BananaDev
    python3 tools/gen-assets.py
    ```
 3. Gere o OG image:

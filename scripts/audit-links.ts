@@ -5,7 +5,7 @@
  * - Extrai todos os URLs do README
  * - Verifica status HTTP (HEAD/GET)
  * - Classifica: ok, redirect, blocked, auth, unverifiable, broken
- * - Gera relatório em .bananadev-work-BananaDev/reports/link-audit.md
+ * - Gera relatório em .bananadev-work-#BananaDev/reports/link-audit.md
  */
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -15,7 +15,7 @@ import { fileURLToPath } from 'node:url';
 const here = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(here, '..');
 const README_PATH = resolve(ROOT, 'README.md');
-const WORK_DIR = resolve(ROOT, '../.bananadev-work-BananaDev');
+const WORK_DIR = resolve(ROOT, '../.bananadev-work-#BananaDev');
 const REPORT_PATH = resolve(WORK_DIR, 'reports/link-audit.md');
 
 interface LinkInfo {
@@ -37,7 +37,7 @@ const LINK_REF = /\[([^\[\]]+)\]\[([a-z0-9_]+)\]/gi;
 const LINK_INLINE = /\[([^\[\]]+)\]\((https?:\/\/[^)\s]+)\)/gi;
 const REF_DEF = /^\[([a-z0-9_]+)\]:\s*(\S+)\s*$/im;
 
-const USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36 BananaDev-LinkAuditor/1.0';
+const USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36 #BananaDev-LinkAuditor/1.0';
 
 const BLOCKED_CODES = new Set([403, 429, 503]);
 const AUTH_CODES = new Set([401, 403]);

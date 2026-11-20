@@ -1,4 +1,8 @@
-# #BananaDev - Formação autodidata em Análise e Desenvolvimento de Sistemas
+<p align="center">
+  <img src="public/brand/logo-256.png" alt="#BananaDev Logo" width="180" height="180" />
+</p>
+
+<h1 align="center">#BananaDev — Formação autodidata em Análise e Desenvolvimento de Sistemas</h1>
 
 ## Matriz curricular 
 

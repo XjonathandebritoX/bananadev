@@ -1,6 +1,6 @@
 # NOTICE — Créditos e licenças de terceiros
 
-Este arquivo documenta os materiais de terceiros utilizados no projeto BananaDev, suas licenças e os devidos créditos. O BananaDev não reivindica direitos sobre esses materiais.
+Este arquivo documenta os materiais de terceiros utilizados no projeto #BananaDev, suas licenças e os devidos créditos. O #BananaDev não reivindica direitos sobre esses materiais.
 
 ## Código-fonte e dependências diretas
 
@@ -28,7 +28,7 @@ Textos das licenças: `licenses/OFL-Fraunces.txt`, `licenses/OFL-Inter.txt`.
 
 Ícones SVG originais criados para o projeto (arquivo `src/components/Icon.astro`), inspirados no estilo [Lucide](https://lucide.dev/) (ISC License). Não são cópias diretas.
 
-## Logo do BananaDev
+## Logo do #BananaDev
 
 Arquivo: `public/brand/original/bananadev-logo.png`
 
@@ -50,18 +50,18 @@ O currículo referencia centenas de recursos públicos (playlists YouTube, docum
 
 A lista completa de URLs está no `README.md` (bloco de referências) e em `src/data/curriculum.generated.json` (campo `references`).
 
-**O BananaDev não hospeda cópias desses materiais** — apenas organiza links públicos. Respeitamos os termos de cada plataforma.
+**O #BananaDev não hospeda cópias desses materiais** — apenas organiza links públicos. Respeitamos os termos de cada plataforma.
 
 ## Ferramenta de benchmarking
 
 - **Website-Downloader (Asimov Academy)**: https://github.com/asimov-academy/Website-Downloader
   - Usado localmente para captura de referências visuais
   - Licença: "Uso pessoal e educacional" (ver repositório)
-  - Não incluído no build nem no deploy — permanece em `.bananadev-work-BananaDev/tools/`
+  - Não incluído no build nem no deploy — permanece em `.bananadev-work-#BananaDev/tools/`
 
 ## Capturas de tela de referência
 
-Armazenadas em `.bananadev-work-BananaDev/screenshots/` e `.bananadev-work-BananaDev/references/`. Uso exclusivo para pesquisa visual durante o desenvolvimento. Não distribuídas com o projeto.
+Armazenadas em `.bananadev-work-#BananaDev/screenshots/` e `.bananadev-work-#BananaDev/references/`. Uso exclusivo para pesquisa visual durante o desenvolvimento. Não distribuídas com o projeto.
 
 ---
 

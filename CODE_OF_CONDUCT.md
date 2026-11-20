@@ -1,8 +1,8 @@
-# Código de Conduta do BananaDev
+# Código de Conduta do #BananaDev
 
 ## Nosso compromisso
 
-No interesse de fomentar um ambiente aberto e acolhedor, nós, contribuidores e mantenedores, nos comprometemos a tornar a participação no BananaDev uma experiência livre de assédio para todos, independentemente de idade, tamanho corporal, deficiência, etnia, características sexuais, identidade e expressão de gênero, nível de experiência, educação, status socioeconômico, nacionalidade, aparência pessoal, raça, religião ou orientação sexual.
+No interesse de fomentar um ambiente aberto e acolhedor, nós, contribuidores e mantenedores, nos comprometemos a tornar a participação no #BananaDev uma experiência livre de assédio para todos, independentemente de idade, tamanho corporal, deficiência, etnia, características sexuais, identidade e expressão de gênero, nível de experiência, educação, status socioeconômico, nacionalidade, aparência pessoal, raça, religião ou orientação sexual.
 
 ## Nossos padrões
 

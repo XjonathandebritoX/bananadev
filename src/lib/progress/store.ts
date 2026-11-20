@@ -203,7 +203,7 @@ export class ProgressStore {
     if (!isRecord(parsed)) return { ok: false, error: 'Estrutura de backup inválida.' };
     const candidate = isRecord(parsed.progress) ? parsed.progress : parsed;
     if (!isRecord(candidate) || (!('disciplines' in candidate) && !('projects' in candidate))) {
-      return { ok: false, error: 'O arquivo não parece ser um backup de progresso do BananaDev.' };
+      return { ok: false, error: 'O arquivo não parece ser um backup de progresso do #BananaDev.' };
     }
     const state = sanitizeState(candidate);
     const knownEntries = Object.keys(state.disciplines).length + Object.keys(state.projects).length;
