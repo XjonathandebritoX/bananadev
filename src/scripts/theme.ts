@@ -63,7 +63,11 @@ export function initTheme(): void {
     const handle = () => {
       if (readPreference(localStorage) === 'system') applyTheme('system', false);
     };
-    if (typeof media.addEventListener === 'function') media.addEventListener('change', handle);
-    else media.addListener(handle);
+    if (typeof media.addEventListener === 'function') {
+      media.addEventListener('change', handle);
+    } else {
+      // Fallback for older browsers: addListener is deprecated but still exists
+      (media as MediaQueryList & { addListener?: (callback: (e: MediaQueryListEvent) => void) => void }).addListener?.(handle);
+    }
   }
 }

@@ -1,5 +1,5 @@
-import type { Curriculum } from '../curriculum/types';
-import type { DisciplineStatus } from '../curriculum/types';
+import type { Curriculum } from './curriculum/types';
+import type { DisciplineStatus } from './curriculum/types';
 
 export type SearchKind = 'discipline' | 'project' | 'specialization';
 
@@ -54,14 +54,14 @@ export function normalize(value: string): string {
 export function buildSearchIndex(curriculum: Curriculum): SearchEntry[] {
   const entries: SearchEntry[] = curriculum.disciplines.map((discipline) => ({
     id: discipline.id,
-    kind: 'discipline',
+    kind: 'discipline' as const,
     title: discipline.name,
     subtitle: `${discipline.semester}º semestre · ${discipline.hours}h`,
     text: [discipline.content, ...discipline.notes, ...discipline.resources.map((resource) => resource.label)].join(' '),
     href: discipline.href,
     semester: discipline.semester,
     technologies: discipline.technologies,
-    resourceKinds: [...new Set(discipline.resources.map((resource) => resource.kind))],
+    resourceKinds: [...new Set(discipline.resources.map((resource: { kind: string }) => resource.kind))],
     hours: discipline.hours,
   }));
 
@@ -90,7 +90,7 @@ export function buildSearchIndex(curriculum: Curriculum): SearchEntry[] {
       href: '/especializacoes/',
       semester: null,
       technologies: specialization.technologies,
-      resourceKinds: [...new Set(specialization.resources.map((resource) => resource.kind))],
+      resourceKinds: [...new Set(specialization.resources.map((resource: { kind: string }) => resource.kind))],
       hours: null,
     });
   }

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { parseCurriculum, validateCurriculum } from '../../src/lib/curriculum/parse';
 import { getCurriculum } from '../../src/lib/curriculum/load';
+import { validateCurriculum } from '../../src/lib/curriculum/parse';
 
 describe('Curriculum Parser', () => {
   let curriculum: ReturnType<typeof getCurriculum>;

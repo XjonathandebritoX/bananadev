@@ -244,7 +244,6 @@ function collectFields(lines: string[]): BlockFields {
 }
 
 function splitBlocks(lines: string[], level: number): { heading: string; body: string[] }[] {
-  const prefix = '#'.repeat(level);
   const blocks: { heading: string; body: string[] }[] = [];
   let current: { heading: string; body: string[] } | null = null;
 

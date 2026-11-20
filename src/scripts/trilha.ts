@@ -1,5 +1,5 @@
 import { progressStore } from '../lib/progress/browser';
-import { filterEntries, KIND_LABEL, RESOURCE_KIND_LABEL, snippet } from '../lib/search';
+import { filterEntries, KIND_LABEL, snippet } from '../lib/search';
 import type { SearchEntry } from '../lib/search';
 import { STATUS_META } from '../lib/resources';
 import type { DisciplineStatus } from '../lib/curriculum/types';
