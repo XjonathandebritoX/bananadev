@@ -30,6 +30,8 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
+      - name: Gerar dados curriculares
+        run: npm run curriculum:generate
       - name: Validar currículo sincronizado
         run: npm run curriculum:check
 
