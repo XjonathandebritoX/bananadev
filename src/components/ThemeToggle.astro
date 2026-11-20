@@ -1,0 +1,22 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<div class="theme-toggle" role="group" aria-label="Tema da interface">
+  <button type="button" data-theme-set="light" aria-pressed="false" aria-label="Usar tema claro" title="Tema claro">
+    <Icon name="sun" size={16} />
+  </button>
+  <button type="button" data-theme-set="system" aria-pressed="true" aria-label="Seguir o tema do sistema" title="Automático">
+    <Icon name="monitor" size={16} />
+  </button>
+  <button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Usar tema escuro" title="Tema escuro">
+    <Icon name="moon" size={16} />
+  </button>
+  {!compact && <span class="sr-only">Claro, automático ou escuro. A preferência fica salva neste navegador.</span>}
+</div>

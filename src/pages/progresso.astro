@@ -1,0 +1,219 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { getCurriculum } from '../lib/curriculum/load';
+import { url } from '../lib/site';
+
+const curriculum = getCurriculum();
+const { semesters } = curriculum;
+const index = curriculum.disciplines.map((discipline) => ({
+  id: discipline.id,
+  title: discipline.name,
+  href: discipline.href,
+  semester: discipline.semester,
+  hours: discipline.hours,
+}));
+const projectsIndex = curriculum.projects.map((project) => ({
+  id: project.id,
+  title: project.name,
+  semester: project.semester,
+  hours: project.hours,
+}));
+---
+
+<BaseLayout
+  title="Meu progresso"
+  description="Acompanhe horas concluídas, disciplinas e projetos do BananaDev. Os dados ficam no seu navegador e podem ser exportados ou importados em JSON."
+>
+  <section class="page-head">
+    <div class="container">
+      <nav aria-label="Você está aqui">
+        <ol class="breadcrumbs" role="list">
+          <li><a href={url('/')}>Início</a></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page">Meu progresso</li>
+        </ol>
+      </nav>
+      <p class="eyebrow">Acompanhamento local</p>
+      <h1>Meu progresso</h1>
+      <p class="lead">
+        Sem conta, sem servidor. Tudo o que você marca fica salvo neste navegador — e pode ser exportado como
+        arquivo JSON para backup ou para levar a outro dispositivo.
+      </p>
+    </div>
+  </section>
+
+  <div class="container section">
+    <div class="grid" style="grid-template-columns: minmax(0, 1fr); gap: 2rem">
+      <div class="card" style="gap: 1.4rem">
+        <div class="split" style="align-items: center; gap: 1.5rem; grid-template-columns: auto minmax(0, 1fr)">
+          <div
+            class="progress-ring"
+            data-progress-ring
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            aria-label="Progresso total da formação"
+          >
+            <div class="progress-ring__label">
+              <span class="progress-ring__num" data-ring-value>0%</span>
+              <span class="progress-ring__cap">da formação</span>
+            </div>
+          </div>
+
+          <div class="stack" style="gap: 0.8rem">
+            <p class="lead" style="font-size: var(--step-1); color: var(--ink)" data-progress-message>
+              Nenhuma disciplina concluída ainda. Comece pela primeira da trilha.
+            </p>
+            <div class="progress progress--lg">
+              <div class="progress__track">
+                <div class="progress__bar" data-progress-bar style="width: 0%"></div>
+              </div>
+              <div class="progress__head">
+                <span><span data-stat="hours">0h</span> de <span data-stat="hours-total">2.400h</span></span>
+                <span><span data-stat="percent">0%</span></span>
+              </div>
+            </div>
+            <div class="tags">
+              <span class="tag"><span data-stat="disciplines">0 de 45</span> disciplinas</span>
+              <span class="tag"><span data-stat="projects">0 de 6</span> projetos</span>
+              <span class="tag"><span data-stat="in-progress">0</span> em andamento</span>
+            </div>
+            <div class="btn-group">
+              <a class="btn btn--primary btn--sm" href={url('/trilha/')}>Continuar estudando</a>
+              <a class="btn btn--ghost btn--sm" href={url('/projetos/')}>Ver projetos</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid--2" style="gap: 2rem">
+        <section class="card" aria-labelledby="continuar">
+          <div class="card__top">
+            <h2 id="continuar" style="font-size: var(--step-1)">Continuar de onde parou</h2>
+            <Icon name="rotate" size={18} />
+          </div>
+          <div data-continue-card class="stack" style="gap: 0.5rem">
+            <p class="text-sm muted" data-continue-empty>
+              Ainda não há disciplinas visitadas. Ao abrir uma disciplina, ela aparece aqui.
+            </p>
+            <div data-continue-content hidden>
+              <p>
+                <span class="card__num">Última visita</span>
+              </p>
+              <p style="font-family: var(--font-display); font-size: 1.15rem" data-continue-title></p>
+              <p class="text-sm muted" data-continue-meta></p>
+              <a class="btn btn--ghost btn--sm" data-continue-link href={url('/trilha/')}>Abrir disciplina</a>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="discipline__section-title">Próximas disciplinas</h3>
+            <ul class="resources" data-next-list></ul>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="proximo-projeto">
+          <div class="card__top">
+            <h2 id="proximo-projeto" style="font-size: var(--step-1)">Próximo projeto</h2>
+            <Icon name="flag" size={18} />
+          </div>
+          <div class="stack" style="gap: 0.5rem">
+            <p class="card__num" data-next-project-semester></p>
+            <p style="font-family: var(--font-display); font-size: 1.2rem" data-next-project-title>
+              —
+            </p>
+            <p class="text-sm muted" data-next-project-meta></p>
+            <a class="btn btn--ghost btn--sm" href={url('/projetos/')}>Abrir projetos integradores</a>
+          </div>
+
+          <div>
+            <h3 class="discipline__section-title">Datas e backup</h3>
+            <p class="text-sm muted">
+              Última atualização registrada: <span data-last-update>—</span>
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <section class="card" aria-labelledby="semestre-progresso">
+        <div class="card__top">
+          <h2 id="semestre-progresso" style="font-size: var(--step-1)">Progresso por semestre</h2>
+          <span class="tag tag--outline">400h por etapa</span>
+        </div>
+        <div class="grid grid--2" style="gap: 1.2rem">
+          {
+            semesters.map((semester) => (
+              <div class="progress" data-semester-progress={semester.number}>
+                <div class="progress__head">
+                  <span>
+                    {semester.number}º · {semester.title}
+                  </span>
+                  <span class="progress__value" data-semester-pct={semester.number}>0%</span>
+                </div>
+                <div class="progress__track">
+                  <div class="progress__bar" data-semester-bar={semester.number} style="width: 0%" />
+                </div>
+                <div class="progress__head">
+                  <span data-semester-count={semester.number}>0/{semester.disciplines.length} disciplinas</span>
+                  <span data-semester-hours={semester.number}>0h</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="dados">
+        <div class="card__top">
+          <h2 id="dados" style="font-size: var(--step-1)">Seus dados</h2>
+          <span class="tag tag--yellow">100% local</span>
+        </div>
+        <p class="text-sm muted">
+          Exporte um backup antes de limpar o navegador. A importação valida o arquivo e substitui o progresso
+          atual — não é possível mesclar dois backups.
+        </p>
+        <div class="btn-group">
+          <button class="btn btn--primary btn--sm" type="button" data-export>
+            <Icon name="download" size={15} /> Exportar JSON
+          </button>
+          <label class="btn btn--ghost btn--sm" for="import-input">
+            <Icon name="upload" size={15} /> Importar backup
+          </label>
+          <input id="import-input" type="file" accept="application/json,.json" data-import hidden />
+          <button class="btn btn--ghost btn--sm" type="button" data-open-clear>
+            <Icon name="trash" size={15} /> Limpar progresso
+          </button>
+        </div>
+        <p class="text-sm" data-import-status role="status" aria-live="polite"></p>
+        <p class="text-sm muted">
+          Nenhum dado é enviado para servidores. Veja <a href={url('/privacidade/')}>privacidade e dados</a>.
+        </p>
+      </section>
+    </div>
+  </div>
+
+  <dialog id="clear-dialog" class="dialog" aria-labelledby="clear-title">
+    <form method="dialog">
+      <h2 id="clear-title" style="font-size: var(--step-2)">Limpar todo o progresso?</h2>
+      <p class="text-sm" style="margin-top: 0.6rem">
+        Esta ação apaga disciplinas concluídas, projetos, histórico de visitas e a preferência salva neste
+        navegador. Não é possível desfazer sem um backup.
+      </p>
+      <div class="btn-group" style="margin-top: 1.4rem">
+        <button class="btn btn--ghost btn--sm" value="cancel">Cancelar</button>
+        <button class="btn btn--sm" value="confirm" data-confirm-clear style="background: var(--danger); border-color: var(--danger); color: #fff">
+          Sim, limpar tudo
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="application/json" id="bd-progress-index" set:html={JSON.stringify({ disciplines: index, projects: projectsIndex }).replace(/</g, '\\u003c')} />
+</BaseLayout>
+
+<script>
+  import { initProgressPage } from '../scripts/progresso';
+  initProgressPage();
+</script>

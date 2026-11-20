@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import StatusControl from '../../components/StatusControl.astro';
+import { getCurriculum } from '../../lib/curriculum/load';
+import { TECH_TAGS } from '../../lib/curriculum/taxonomy';
+import { url } from '../../lib/site';
+
+const curriculum = getCurriculum();
+const { projects, semesters, developmentRules } = curriculum;
+---
+
+<BaseLayout
+  title="Projetos integradores"
+  description="Seis projetos integradores que transformam cada semestre do BananaDev em uma entrega pública: do sistema em console ao produto open source em produção."
+>
+  <section class="page-head">
+    <div class="container">
+      <nav aria-label="Você está aqui">
+        <ol class="breadcrumbs" role="list">
+          <li><a href={url('/')}>Início</a></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page">Projetos integradores</li>
+        </ol>
+      </nav>
+      <p class="eyebrow">Aprender por entrega</p>
+      <h1>Seis projetos, um portfólio que evolui</h1>
+      <p class="lead">
+        Cada semestre termina com um projeto funcional, documentado e versionado. A complexidade cresce junto com a
+        formação — até chegar a um produto open source em produção.
+      </p>
+      <div class="discipline-detail__meta">
+        <span class="tag tag--yellow">{projects.length} projetos</span>
+        <span class="tag">{projects.reduce((total, project) => total + project.hours, 0)}h de prática integrada</span>
+        <span class="tag">GitHub + documentação + testes</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="container section">
+    <ol class="timeline" role="list">
+      {
+        projects.map((project) => {
+          const semester = semesters.find((item) => item.number === project.semester)!;
+          const techs = project.technologies
+            .map((id) => TECH_TAGS.find((tag) => tag.id === id)?.label)
+            .filter((label): label is string => Boolean(label));
+          return (
+            <li id={project.id}>
+              <article class="project-card" aria-labelledby={`${project.id}-titulo`}>
+                <div class="project-card__head">
+                  <div class="stack" style="gap: 0.4rem">
+                    <span class="project-card__roman" aria-hidden="true">
+                      {project.roman}
+                    </span>
+                    <p class="eyebrow">{project.semester}º semestre · {project.hours}h</p>
+                    <h2 id={`${project.id}-titulo`} style="font-size: var(--step-2)">
+                      {project.name}
+                    </h2>
+                  </div>
+                  <div class="stack" style="gap: 0.5rem; justify-items: end">
+                    <span class="tag tag--outline">PI {project.roman}</span>
+                    <StatusControl id={project.id} kind="project" label={project.title} compact />
+                  </div>
+                </div>
+
+                <p>{project.summary}</p>
+
+                <div class="project-card__grid">
+                  <div class="project-meta">
+                    <span class="project-meta__label">Entrega esperada</span>
+                    <p>{project.delivery}</p>
+                  </div>
+                  <div class="project-meta">
+                    <span class="project-meta__label">Critério para avançar</span>
+                    <p>{semester.criteria?.text ?? 'Concluir a entrega, documentar e publicar o projeto.'}</p>
+                  </div>
+                </div>
+
+                {techs.length > 0 && (
+                  <div class="tags">
+                    {techs.map((tech) => (
+                      <span class="tag tag--outline">{tech}</span>
+                    ))}
+                  </div>
+                )}
+
+                <div class="btn-group">
+                  <a class="btn btn--ghost btn--sm" href={url(`/trilha/#semestre-${project.semester}`)}>
+                    Disciplinas do semestre <Icon name="arrow-right" size={14} />
+                  </a>
+                </div>
+              </article>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </div>
+
+  <section class="section section--band">
+    <div class="container split">
+      <div class="stack" style="gap: 1rem">
+        <p class="eyebrow">Fluxo de trabalho</p>
+        <h2>O mesmo processo em todos os projetos</h2>
+        <p class="muted">
+          Os projetos seguem as regras de desenvolvimento open source descritas na matriz curricular. O objetivo é
+          criar hábitos profissionais desde a primeira entrega.
+        </p>
+      </div>
+      <div class="stack">
+        <ul class="footer-steps">
+          {developmentRules.items.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        <div class="callout">
+          <strong>Fluxo</strong>
+          <p>{developmentRules.flow}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container section--tight">
+    <div class="callout callout--info">
+      <strong>O projeto é seu, não uma cópia</strong>
+      <p>
+        As entregas descrevem objetivos e critérios — o tema específico (estoque, biblioteca, finanças) é escolha de
+        quem estuda. O importante é demonstrar domínio técnico, documentação e histórico de commits reais.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { initProgressUI } from '../../scripts/progress-ui';
+  initProgressUI();
+</script>

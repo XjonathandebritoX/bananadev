@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, url } from '../lib/site';
+---
+
+<BaseLayout
+  title="Privacidade e dados"
+  description="Como o BananaDev trata seus dados: progresso salvo apenas no navegador, sem contas, sem cookies de publicidade e sem analytics invasivo."
+>
+  <section class="page-head">
+    <div class="container">
+      <nav aria-label="Você está aqui">
+        <ol class="breadcrumbs" role="list">
+          <li><a href={url('/')}>Início</a></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page">Privacidade</li>
+        </ol>
+      </nav>
+      <p class="eyebrow">Transparência</p>
+      <h1>Privacidade e dados</h1>
+      <p class="lead">
+        O BananaDev é um site estático. Não existe back-end, banco de dados de usuários nem conta. Seu progresso é
+        armazenado pelo próprio navegador.
+      </p>
+    </div>
+  </section>
+
+  <div class="container section">
+    <div class="prose">
+      <h2>O que é armazenado</h2>
+      <p>O site grava duas chaves no <code>localStorage</code> do seu navegador:</p>
+      <ul>
+        <li>
+          <code>bananadev.progress.v1</code>: status das disciplinas e projetos, data da última alteração e as
+          últimas disciplinas visitadas.
+        </li>
+        <li><code>bananadev.theme</code>: sua preferência de tema (claro, escuro ou automático).</li>
+      </ul>
+      <p>
+        Nada disso é transmitido para servidores. Não há cookies de publicidade, rastreadores de terceiros,
+        fingerprinting ou analytics invasivo.
+      </p>
+
+      <h2>Por que isso importa</h2>
+      <p>
+        Progresso de estudo é informação pessoal. Ao manter os dados no dispositivo, você não precisa criar conta,
+        não entrega e-mail e não corre o risco de perder o histórico por mudança de política de uma plataforma.
+      </p>
+
+      <h2>Seus controles</h2>
+      <ul>
+        <li>Exportar um backup JSON em <a href={url('/progresso/')}>Meu progresso</a>.</li>
+        <li>Importar o backup em outro navegador ou dispositivo.</li>
+        <li>Limpar todo o progresso, com confirmação explícita.</li>
+        <li>Limpar os dados do site pelas configurações do navegador a qualquer momento.</li>
+      </ul>
+
+      <h2>Links externos</h2>
+      <p>
+        Os materiais apontam para YouTube, documentações oficiais, GitHub e outras plataformas. Ao abrir esses
+        links, as políticas de privacidade dos respectivos sites passam a valer. O BananaDev não controla esses
+        serviços e não recebe dados deles.
+      </p>
+
+      <h2>Hospedagem</h2>
+      <p>
+        A versão publicada é hospedada em infraestrutura estática (GitHub Pages ou Cloudflare Pages). Esses
+        provedores podem registrar requisições HTTP, incluindo endereço IP, conforme suas próprias políticas de
+        segurança e disponibilidade. O BananaDev não tem acesso a esses registros individuais nem os utiliza para
+        perfilamento.
+      </p>
+
+      <h2>Contribuições e segurança</h2>
+      <p>
+        Vulnerabilidades devem ser reportadas de forma privada, conforme o
+        <a href={`${SITE.repo}/blob/main/SECURITY.md`} target="_blank" rel="noopener noreferrer">SECURITY.md</a>.
+        O conteúdo importado de backups é validado e sanitizado antes de ser aplicado.
+      </p>
+
+      <div class="callout callout--info" style="margin-top: 2rem">
+        <strong>Resumo em uma frase</strong>
+        <p>Sem cadastro, sem rastreamento, sem envio de dados: o progresso pertence a você e fica no seu navegador.</p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

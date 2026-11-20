@@ -1,0 +1,180 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { getCurriculum } from '../lib/curriculum/load';
+import { RESOURCE_META } from '../lib/resources';
+import type { Resource, ResourceKind } from '../lib/curriculum/types';
+import { url } from '../lib/site';
+
+const curriculum = getCurriculum();
+
+const all: Resource[] = [];
+const seen = new Set<string>();
+for (const discipline of curriculum.disciplines) {
+  for (const resource of discipline.resources) {
+    if (seen.has(resource.url)) continue;
+    seen.add(resource.url);
+    all.push(resource);
+  }
+}
+for (const project of curriculum.projects) {
+  // Projetos não possuem links próprios; nada a adicionar.
+  void project;
+}
+for (const specialization of curriculum.specializations) {
+  for (const resource of specialization.resources) {
+    if (seen.has(resource.url)) continue;
+    seen.add(resource.url);
+    all.push(resource);
+  }
+}
+
+const groups: { title: string; description: string; kinds: ResourceKind[] }[] = [
+  {
+    title: 'Playlists e cursos em vídeo',
+    description: 'Cursos abertos usados como eixo de aprendizagem, prioritariamente em português.',
+    kinds: ['playlist', 'video', 'course'],
+  },
+  {
+    title: 'Documentação oficial',
+    description: 'Referências técnicas para consulta, atualização e resolução de dúvidas.',
+    kinds: ['docs'],
+  },
+  {
+    title: 'Livros e materiais abertos',
+    description: 'Leituras de apoio distribuídas gratuitamente pelos autores.',
+    kinds: ['book'],
+  },
+  {
+    title: 'Repositórios e ferramentas',
+    description: 'Código, plataformas e utilitários citados na matriz.',
+    kinds: ['repo', 'tool'],
+  },
+  {
+    title: 'Comunidades',
+    description: 'Canais e espaços para acompanhar a prática profissional.',
+    kinds: ['community'],
+  },
+  {
+    title: 'Prática deliberada',
+    description: 'Ambientes de exercício e desafios técnicos.',
+    kinds: ['practice'],
+  },
+];
+
+const byGroup = groups.map((group) => ({
+  ...group,
+  items: all
+    .filter((resource) => group.kinds.includes(resource.kind))
+    .sort((a, b) => a.label.localeCompare(b.label, 'pt-BR')),
+}));
+---
+
+<BaseLayout
+  title="Recursos e ferramentas"
+  description="Todos os materiais citados na matriz curricular do BananaDev: playlists, cursos, documentação oficial, livros, repositórios, comunidades e ambientes de prática."
+>
+  <section class="page-head">
+    <div class="container">
+      <nav aria-label="Você está aqui">
+        <ol class="breadcrumbs" role="list">
+          <li><a href={url('/')}>Início</a></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page">Recursos</li>
+        </ol>
+      </nav>
+      <p class="eyebrow">Biblioteca aberta</p>
+      <h1>Recursos e ferramentas</h1>
+      <p class="lead">
+        Todo material citado na matriz curricular, reunido em um só lugar. Nada aqui é exclusivo do BananaDev: são
+        links públicos mantidos por suas comunidades.
+      </p>
+      <div class="discipline-detail__meta">
+        <span class="tag tag--yellow">{all.length} links únicos</span>
+        <span class="tag">Sem cadastro</span>
+        <span class="tag">Sem paywall</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="container section">
+    <div class="grid grid--2" style="gap: 3rem">
+      <nav class="section-toc" aria-label="Categorias de recursos" style="align-content: start">
+        <span class="eyebrow">Categorias</span>
+        {
+          byGroup.map((group) => (
+            <a href={`#${group.kinds[0]}`}>
+              <span>{group.title}</span>
+              <span class="mono">{group.items.length}</span>
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="stack" style="gap: 1.4rem">
+        <div class="callout">
+          <strong>Curadoria, não coleção</strong>
+          <p>
+            Os links vêm do README do projeto. Antes de seguir uma trilha, confira a ementa da disciplina: a
+            playlist é o ponto de partida, a documentação oficial é a referência e a prática própria é o critério de
+            domínio.
+          </p>
+        </div>
+        <div class="callout callout--info">
+          <strong>Encontrou um link quebrado?</strong>
+          <p>
+            Abra uma issue no repositório com o link, a disciplina e o erro observado. Não substituímos materiais
+            sem verificar o conteúdo correspondente.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {
+      byGroup.map((group) => (
+        <section class="section section--tight" id={group.kinds[0]} aria-labelledby={`${group.kinds[0]}-titulo`}>
+          <div class="section__head" style="margin-bottom: 1.4rem">
+            <div class="stack" style="gap: 0.4rem">
+              <p class="eyebrow">{group.items.length} recursos</p>
+              <h2 id={`${group.kinds[0]}-titulo`} style="font-size: var(--step-2)">
+                {group.title}
+              </h2>
+            </div>
+            <p class="text-sm muted">{group.description}</p>
+          </div>
+
+          <ul class="resources" style="gap: 0.5rem">
+            {group.items.map((resource) => (
+              <li>
+                <a class="resource" href={resource.url} target="_blank" rel="noopener noreferrer">
+                  <span class="resource__icon" aria-hidden="true">
+                    <Icon name={RESOURCE_META[resource.kind].icon} size={15} />
+                  </span>
+                  <span class="resource__text">
+                    <span class="resource__label">{resource.label}</span>
+                    <span class="resource__meta">
+                      {RESOURCE_META[resource.kind].label} · {resource.domain}
+                    </span>
+                  </span>
+                  <span class="resource__arrow" aria-hidden="true">
+                    <Icon name="external" size={15} />
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+
+  <div class="container section--tight">
+    <div class="callout callout--success">
+      <strong>Materiais de terceiros</strong>
+      <p>
+        Os links pertencem aos seus autores e comunidades. O BananaDev não reivindica direitos sobre eles, não
+        hospeda cópias e respeita as condições de cada plataforma. Consulte o NOTICE.md para os créditos do projeto.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

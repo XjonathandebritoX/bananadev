@@ -1,0 +1,41 @@
+---
+import type { DisciplineStatus } from '../lib/curriculum/types';
+import { STATUS_META } from '../lib/resources';
+import Icon from './Icon.astro';
+
+interface Props {
+  id: string;
+  kind: 'discipline' | 'project';
+  label: string;
+  compact?: boolean;
+}
+
+const { id, kind, label, compact = false } = Astro.props;
+const statuses: DisciplineStatus[] = ['not-started', 'in-progress', 'completed'];
+const groupName = `status-${kind}-${id}`;
+---
+
+<fieldset class="status-field" data-status-group>
+  <legend class="sr-only">Status de conclusão: {label}</legend>
+  <div class="status-group">
+    {
+      statuses.map((status) => (
+        <label data-value={status}>
+          <input
+            type="radio"
+            name={groupName}
+            value={status}
+            data-status-input
+            data-item-id={id}
+            data-item-kind={kind}
+          />
+          <span>
+            <i class="status-dot" aria-hidden="true" />
+            {compact && status === 'not-started' ? 'Iniciar' : STATUS_META[status].label}
+          </span>
+        </label>
+      ))
+    }
+  </div>
+</fieldset>
+<span class="sr-only" data-status-announcer aria-live="polite"></span>

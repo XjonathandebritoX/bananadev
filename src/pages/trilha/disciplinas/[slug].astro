@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Icon from '../../../components/Icon.astro';
+import ResourceList from '../../../components/ResourceList.astro';
+import StatusControl from '../../../components/StatusControl.astro';
+import { getCurriculum } from '../../../lib/curriculum/load';
+import { RESOURCE_META } from '../../../lib/resources';
+import { TECH_TAGS } from '../../../lib/curriculum/taxonomy';
+import { url } from '../../../lib/site';
+
+export function getStaticPaths() {
+  const curriculum = getCurriculum();
+  return curriculum.disciplines.map((discipline, index) => {
+    const semester = curriculum.semesters.find((item) => item.number === discipline.semester)!;
+    return {
+      params: { slug: discipline.slug },
+      props: {
+        discipline,
+        semester,
+        previous: curriculum.disciplines[index - 1] ?? null,
+        next: curriculum.disciplines[index + 1] ?? null,
+      },
+    };
+  });
+}
+
+const { discipline, semester, previous, next } = Astro.props;
+const techs = discipline.technologies
+  .map((id) => TECH_TAGS.find((tag) => tag.id === id)?.label)
+  .filter((label): label is string => Boolean(label));
+const kinds = [...new Set(discipline.resources.map((resource) => resource.kind))];
+---
+
+<BaseLayout
+  title={`${discipline.name} — ${discipline.semester}º semestre`}
+  description={`${discipline.name}: ${discipline.hours}h no ${discipline.semester}º semestre. ${discipline.content}`.slice(0, 300)}
+  type="article"
+  canonicalPath={url(`/trilha/disciplinas/${discipline.slug}/`)}
+  structuredData={{
+    '@type': 'Course',
+    name: discipline.name,
+    description: discipline.content,
+    inLanguage: 'pt-BR',
+    educationalLevel: `${discipline.semester}º semestre`,
+    timeRequired: `PT${discipline.hours}H`,
+    isAccessibleForFree: true,
+  }}
+>
+  <div class="page-head">
+    <div class="container">
+      <nav aria-label="Você está aqui">
+        <ol class="breadcrumbs" role="list">
+          <li><a href={url('/')}>Início</a></li>
+          <li aria-hidden="true">/</li>
+          <li><a href={url('/trilha/')}>Trilha curricular</a></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page">{discipline.name}</li>
+        </ol>
+      </nav>
+
+      <p class="eyebrow">
+        {discipline.semester}º semestre · disciplina {String(discipline.number).padStart(2, '0')} de 45
+      </p>
+      <h1>{discipline.name}</h1>
+      <div class="discipline-detail__meta">
+        <span class="tag tag--yellow">{discipline.hours}h</span>
+        <span class="tag">{semester.title}</span>
+        {kinds.map((kind) => <span class="tag">{RESOURCE_META[kind].label}</span>)}
+      </div>
+    </div>
+  </div>
+
+  <div class="container discipline-detail">
+    <article class="stack" style="gap: 2rem">
+      <section aria-labelledby="ementa">
+        <h2 id="ementa" class="discipline__section-title">Ementa</h2>
+        <p class="lead" style="color: var(--ink)">{discipline.content}</p>
+      </section>
+
+      {
+        discipline.notes.length > 0 && (
+          <div class="stack" style="gap: 0.6rem">
+            {discipline.notes.map((note) => <p class="note">{note}</p>)}
+          </div>
+        )
+      }
+
+      <section aria-labelledby="materiais">
+        <h2 id="materiais" class="discipline__section-title">Materiais e referências</h2>
+        {
+          discipline.resources.length > 0 ? (
+            <ResourceList resources={discipline.resources} title="Acesse os materiais" />
+          ) : (
+            <div class="callout">
+              <strong>Materiais definidos na eletiva</strong>
+              <p>
+                Esta disciplina é cumprida com uma trilha de especialização opcional e um laboratório próprio.
+                Consulte a página de especializações para escolher a sua.
+              </p>
+              <a class="btn btn--ghost btn--sm" href={url('/especializacoes/')}>Ver especializações</a>
+            </div>
+          )
+        }
+      </section>
+
+      {
+        techs.length > 0 && (
+          <section aria-labelledby="tecnologias">
+            <h2 id="tecnologias" class="discipline__section-title">Tecnologias relacionadas</h2>
+            <div class="tags">
+              {techs.map((tech) => (
+                <a class="tag tag--outline" href={url(`/trilha/?tech=${tech.toLowerCase()}`)}>
+                  {tech}
+                </a>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      <section aria-labelledby="projeto" class="callout">
+        <strong>Entrega do semestre: Projeto Integrador {semester.project.roman}</strong>
+        <p>{semester.project.delivery}</p>
+        <a class="btn btn--ghost btn--sm" href={url(`/projetos/#${semester.project.id}`)}>
+          Ver o projeto <Icon name="arrow-right" size={14} />
+        </a>
+      </section>
+
+      <nav class="prev-next" aria-label="Navegação entre disciplinas">
+        {
+          previous ? (
+            <a href={url(previous.href)}>
+              <span>Anterior</span>
+              <strong>{previous.name}</strong>
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          next ? (
+            <a href={url(next.href)}>
+              <span>Próxima</span>
+              <strong>{next.name}</strong>
+            </a>
+          ) : (
+            <span />
+          )
+        }
+      </nav>
+    </article>
+
+    <aside class="discipline-detail__aside">
+      <div class="card" style="gap: 1rem">
+        <div>
+          <p class="eyebrow">Seu progresso</p>
+          <p class="text-sm muted" style="margin-top: 0.4rem">
+            Salvo apenas neste navegador. Nada é enviado para servidores.
+          </p>
+        </div>
+        <StatusControl id={discipline.id} kind="discipline" label={discipline.name} />
+        <p class="status-badge">
+          Status atual:
+          <span data-status-badge data-item-id={discipline.id} data-item-kind="discipline" data-status="not-started">
+            Não iniciada
+          </span>
+        </p>
+        <div class="progress">
+          <div class="progress__head">
+            <span>Formação completa</span>
+            <span class="progress__value" data-stat="percent">0%</span>
+          </div>
+          <div class="progress__track">
+            <div class="progress__bar" data-progress-bar style="width: 0%"></div>
+          </div>
+          <div class="progress__head">
+            <span><span data-stat="hours">0h</span> de <span data-stat="hours-total">2.400h</span></span>
+            <a href={url('/progresso/')} class="text-sm">Detalhes</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-toc">
+        <span class="eyebrow">Nesta página</span>
+        <a href="#ementa"><span>Ementa</span><span aria-hidden="true">↓</span></a>
+        <a href="#materiais"><span>Materiais</span><span aria-hidden="true">↓</span></a>
+        <a href="#projeto"><span>Projeto do semestre</span><span aria-hidden="true">↓</span></a>
+      </div>
+
+      <div class="card" style="gap: 0.6rem">
+        <p class="eyebrow">Semestre</p>
+        <h3 style="font-size: 1.15rem">{semester.title}</h3>
+        <p class="text-sm muted">{semester.objective}</p>
+        <a class="btn btn--quiet btn--sm" href={url(`/trilha/#semestre-${semester.number}`)}>
+          Ver todas as disciplinas do semestre
+        </a>
+      </div>
+    </aside>
+  </div>
+
+  <span data-visited={discipline.id} hidden></span>
+</BaseLayout>
+
+<script>
+  import { initProgressUI } from '../../../scripts/progress-ui';
+  initProgressUI();
+</script>

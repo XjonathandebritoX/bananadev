@@ -1,0 +1,24 @@
+# Dependências
+node_modules
+node_modules/
+.pnpm-store
+
+# Build e artefatos
+dist/
+.astro/
+src/data/curriculum.generated.json
+
+# Testes e relatórios locais
+test-results/
+playwright-report/
+blob-report/
+coverage/
+.lighthouseci/
+
+# Ambiente
+.env
+.env.*
+!.env.example
+.DS_Store
+*.log
+*.local

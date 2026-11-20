@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { getCurriculum } from '../lib/curriculum/load';
+import { SITE, url } from '../lib/site';
+
+const curriculum = getCurriculum();
+const stats = [
+  { value: curriculum.meta.totalHours.toLocaleString('pt-BR'), label: 'horas planejadas' },
+  { value: '6', label: 'semestres de 400h' },
+  { value: String(curriculum.meta.disciplineCount), label: 'disciplinas' },
+  { value: String(curriculum.meta.projectCount), label: 'projetos integradores' },
+];
+---
+
+<BaseLayout
+  title="Sobre o projeto"
+  description="O que é o BananaDev, por que foi criado, para quem serve, como funciona a formação e como participar de um projeto educacional open source."
+>
+  <section class="page-head">
+    <div class="container">
+      <nav aria-label="Você está aqui">
+        <ol class="breadcrumbs" role="list">
+          <li><a href={url('/')}>Início</a></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page">Sobre</li>
+        </ol>
+      </nav>
+      <p class="eyebrow">Sobre o projeto</p>
+      <h1>Uma formação aberta, feita para ser usada</h1>
+      <p class="lead">
+        O BananaDev é uma plataforma educacional open source que organiza uma formação autodidata completa em
+        Análise e Desenvolvimento de Sistemas — com currículo público, materiais gratuitos e projetos reais.
+      </p>
+      <div class="discipline-detail__meta">
+        <span class="tag tag--yellow">Código MIT</span>
+        <span class="tag">Conteúdo CC BY 4.0</span>
+        <span class="tag">Sem cadastro</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="container section">
+    <div class="split split--aside">
+      <nav class="section-toc" aria-label="Nesta página" style="align-content: start">
+        <span class="eyebrow">Nesta página</span>
+        <a href="#o-que-e"><span>O que é</span><span aria-hidden="true">→</span></a>
+        <a href="#por-que"><span>Por que existe</span><span aria-hidden="true">→</span></a>
+        <a href="#para-quem"><span>Para quem</span><span aria-hidden="true">→</span></a>
+        <a href="#como-funciona"><span>Como funciona</span><span aria-hidden="true">→</span></a>
+        <a href="#como-usar"><span>Como usar</span><span aria-hidden="true">→</span></a>
+        <a href="#contribuir"><span>Como contribuir</span><span aria-hidden="true">→</span></a>
+        <a href="#manutencao"><span>Manutenção</span><span aria-hidden="true">→</span></a>
+        <a href="#limites"><span>Limites e transparência</span><span aria-hidden="true">→</span></a>
+      </nav>
+
+      <div class="prose">
+        <h2 id="o-que-e">O que é o BananaDev</h2>
+        <p>
+          É uma plataforma estática de trilhas curriculares. A matriz curricular vive no
+          <a href={`${SITE.repo}/blob/main/README.md`} target="_blank" rel="noopener noreferrer">README do repositório</a>
+          e é convertida em dados estruturados durante o build. O site e o README apresentam sempre a mesma grade:
+          se um dado obrigatório se perde, o build falha.
+        </p>
+        <p>
+          Não é uma escola, não emite certificados e não substitui uma graduação. É uma organização pública de
+          estudo, com curadoria de materiais gratuitos e critérios claros de progressão.
+        </p>
+
+        <div class="stats" style="margin: 2rem 0">
+          {
+            stats.map((stat) => (
+              <div class="stat">
+                <p class="stat__value">{stat.value}</p>
+                <p class="stat__label">{stat.label}</p>
+              </div>
+            ))
+          }
+        </div>
+
+        <h2 id="por-que">Por que existe</h2>
+        <p>
+          Existe material gratuito de excelência na internet. O problema é que ele não está organizado em uma
+          progressão: há cursos soltos, documentações densas e listas intermináveis de links. Quem estuda sozinho
+          gasta energia decidindo o que estudar em vez de estudar.
+        </p>
+        <p>
+          O BananaDev parte de uma matriz de Análise e Desenvolvimento de Sistemas e a transforma em um percurso
+          navegável: objetivo por semestre, ementa por disciplina, carga horária explícita e um projeto por etapa.
+        </p>
+
+        <h2 id="para-quem">Para quem</h2>
+        <ul>
+          <li>Quem está começando em tecnologia e quer um caminho estruturado, sem pagar mensalidade.</li>
+          <li>Quem já estuda por conta própria e precisa de referência curricular para não deixar lacunas.</li>
+          <li>Quem está em transição de carreira e quer construir portfólio com prática deliberada.</li>
+          <li>Professores e coletivos que queiram adaptar a matriz para seus próprios cursos.</li>
+        </ul>
+
+        <h2 id="como-funciona">Como funciona a formação</h2>
+        <p>
+          São seis semestres de 400 horas, totalizando 2.400 horas. Cada semestre combina disciplinas teóricas e
+          práticas com um projeto integrador. A stack principal é Python, JavaScript, TypeScript, React, FastAPI,
+          PostgreSQL, Git/GitHub e Docker. Outras tecnologias ficam nas especializações opcionais.
+        </p>
+        <p>
+          A conclusão de uma disciplina exige estudar a ementa, resolver exercícios sem copiar, implementar pelo
+          menos um laboratório próprio, fazer uma avaliação técnica, documentar o aprendizado e publicar as
+          entregas no GitHub.
+        </p>
+
+        <h2 id="como-usar">Como usar a plataforma</h2>
+        <ol>
+          <li>Abra a <a href={url('/trilha/')}>trilha curricular</a> e leia o objetivo do primeiro semestre.</li>
+          <li>Escolha a primeira disciplina e abra os materiais no README da disciplina.</li>
+          <li>Marque o status — não iniciada, em andamento ou concluída — conforme avança.</li>
+          <li>Use <a href={url('/progresso/')}>Meu progresso</a> para ver horas concluídas, projetos e continuar de onde parou.</li>
+          <li>Exporte um backup JSON periodicamente: os dados ficam apenas no navegador.</li>
+        </ol>
+
+        <h2 id="contribuir">Como participar</h2>
+        <p>
+          O projeto é aberto a correções de links, melhorias de acessibilidade, novos materiais verificados,
+          traduções e ajustes na plataforma. O fluxo é o mesmo dos projetos da formação: issue, branch, pull
+          request, revisão e integração.
+        </p>
+        <div class="btn-group" style="margin-top: 1.2rem">
+          <a class="btn btn--primary btn--sm" href={SITE.issues} target="_blank" rel="noopener noreferrer">
+            Abrir uma issue <Icon name="external" size={14} />
+          </a>
+          <a class="btn btn--ghost btn--sm" href={`${SITE.repo}/blob/main/CONTRIBUTING.md`} target="_blank" rel="noopener noreferrer">
+            Guia de contribuição
+          </a>
+          <a class="btn btn--quiet btn--sm" href={`${SITE.repo}/blob/main/CODE_OF_CONDUCT.md`} target="_blank" rel="noopener noreferrer">
+            Código de conduta
+          </a>
+        </div>
+
+        <h2 id="manutencao">Como o projeto é mantido</h2>
+        <p>
+          A manutenção é comunitária e independente. O currículo é versionado junto com o código, revisado por
+          pull requests e validado automaticamente no build. Não há anúncios, rastreadores ou dependência de
+          serviços pagos.
+        </p>
+
+        <h2 id="limites">Limites e transparência</h2>
+        <div class="callout callout--warning">
+          <strong>Projeto independente de formação autodidata</strong>
+          <p>
+            O BananaDev não concede diploma de graduação, não possui reconhecimento do MEC e não garante emprego.
+            A carga horária é uma estimativa de dedicação. Os materiais externos pertencem aos seus autores e podem
+            mudar sem aviso.
+          </p>
+        </div>
+        <p style="margin-top: 1.2rem">
+          Dúvidas sobre licenças, segurança ou uso comercial estão documentadas no
+          <a href={`${SITE.repo}/blob/main/NOTICE.md`} target="_blank" rel="noopener noreferrer">NOTICE.md</a> e no
+          <a href={`${SITE.repo}/blob/main/SECURITY.md`} target="_blank" rel="noopener noreferrer">SECURITY.md</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

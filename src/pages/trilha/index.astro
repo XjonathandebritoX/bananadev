@@ -1,0 +1,225 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import DisciplineCard from '../../components/DisciplineCard.astro';
+import { getCurriculum } from '../../lib/curriculum/load';
+import { buildSearchIndex, RESOURCE_KIND_LABEL } from '../../lib/search';
+import { RESOURCE_FILTERS } from '../../lib/resources';
+import { TECH_TAGS } from '../../lib/curriculum/taxonomy';
+import { url } from '../../lib/site';
+
+const curriculum = getCurriculum();
+const { semesters, meta } = curriculum;
+const searchIndex = buildSearchIndex(curriculum);
+const usedTechs = TECH_TAGS.filter((tag) => curriculum.disciplines.some((d) => d.technologies.includes(tag.id)));
+const countBySemester = (number: number) =>
+  curriculum.disciplines.filter((discipline) => discipline.semester === number).length;
+---
+
+<BaseLayout
+  title="Trilha curricular"
+  description="A matriz curricular completa do BananaDev: seis semestres, 45 disciplinas, ementas, carga horária, videoaulas, documentação e projetos integradores."
+  canonicalPath={url('/trilha/')}
+>
+  <section class="page-head">
+    <div class="container">
+      <nav aria-label="Você está aqui">
+        <ol class="breadcrumbs" role="list">
+          <li><a href={url('/')}>Início</a></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page">Trilha curricular</li>
+        </ol>
+      </nav>
+      <p class="eyebrow">Matriz curricular</p>
+      <h1>A formação inteira, disciplina por disciplina</h1>
+      <p class="lead">
+        {meta.totalHours}h planejadas em {semesters.length} semestres. Cada disciplina traz ementa, carga horária e
+        materiais gratuitos; cada semestre termina em um projeto integrador.
+      </p>
+
+      <div class="progress" style="margin-top: 1.75rem; max-width: 32rem">
+        <div class="progress__head">
+          <span data-progress-message>Nenhuma disciplina concluída ainda.</span>
+          <span class="progress__value"><span data-stat="percent">0%</span></span>
+        </div>
+        <div class="progress__track">
+          <div class="progress__bar" data-progress-bar style="width: 0%"></div>
+        </div>
+        <div class="progress__head">
+          <span><span data-stat="hours">0h</span> de <span data-stat="hours-total">2.400h</span></span>
+          <span><span data-stat="disciplines">0 de 45</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container trilha-layout section section--tight" style="padding-top: 2rem">
+    <aside class="trilha-aside">
+      <nav class="side-nav" aria-label="Semestres da trilha">
+        <p class="eyebrow">Semestres</p>
+        <ul class="side-nav__list" role="list">
+          {
+            semesters.map((semester) => (
+              <li>
+                <a href={`#semestre-${semester.number}`} data-section-link>
+                  <span class="side-nav__num">{String(semester.number).padStart(2, '0')}</span>
+                  <span>{semester.title}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="card" style="gap: 0.8rem">
+        <p class="eyebrow">Progresso</p>
+        <div class="progress">
+          <div class="progress__head">
+            <span>Formação</span>
+            <span class="progress__value" data-stat="percent">0%</span>
+          </div>
+          <div class="progress__track">
+            <div class="progress__bar" data-progress-bar style="width: 0%"></div>
+          </div>
+        </div>
+        {
+          semesters.map((semester) => (
+            <div class="progress" data-semester-progress={semester.number}>
+              <div class="progress__head">
+                <span>{semester.number}º semestre</span>
+                <span class="progress__value" data-semester-pct={semester.number}>0%</span>
+              </div>
+              <div class="progress__track">
+                <div class="progress__bar" data-semester-bar={semester.number} style="width: 0%" />
+              </div>
+              <div class="progress__head">
+                <span data-semester-count={semester.number}>0/{semester.disciplines.length} disciplinas</span>
+                <span data-semester-hours={semester.number}>0h</span>
+              </div>
+            </div>
+          ))
+        }
+        <a class="btn btn--ghost btn--sm" href={url('/progresso/')}>Abrir meu progresso</a>
+      </div>
+    </aside>
+
+    <div>
+      <div class="search-panel" id="busca">
+        <div class="search-field">
+          <Icon name="search" size={18} />
+          <label class="sr-only" for="busca-input">Buscar disciplinas, tecnologias, materiais e projetos</label>
+          <input
+            id="busca-input"
+            type="search"
+            placeholder="Buscar disciplina, tecnologia, ementa, material…"
+            autocomplete="off"
+            spellcheck="false"
+            data-search-input
+          />
+        </div>
+
+        <div class="filters">
+          <div class="filter-row">
+            <span class="filter-row__label" id="filtro-semestre">Semestre</span>
+            <div role="group" aria-labelledby="filtro-semestre" style="display: flex; flex-wrap: wrap; gap: 0.4rem">
+              <button class="chip" type="button" data-filter-semester="" aria-pressed="true">Todos</button>
+              {
+                semesters.map((semester) => (
+                  <button class="chip" type="button" data-filter-semester={String(semester.number)} aria-pressed="false">
+                    {semester.number}º <span class="chip__count" data-count-semester={semester.number}>{countBySemester(semester.number)}</span>
+                  </button>
+                ))
+              }
+            </div>
+          </div>
+
+          <div class="filter-row">
+            <label class="filter-row__label" for="filtro-tech">Tecnologia</label>
+            <select id="filtro-tech" class="select" data-filter-technology>
+              <option value="">Todas as tecnologias</option>
+              {usedTechs.map((tag) => <option value={tag.id}>{tag.label}</option>)}
+            </select>
+
+            <label class="filter-row__label" for="filtro-tipo" style="margin-left: 0.5rem">Material</label>
+            <select id="filtro-tipo" class="select" data-filter-kind>
+              <option value="">Todos os tipos</option>
+              {RESOURCE_FILTERS.map((kind) => <option value={kind.value}>{RESOURCE_KIND_LABEL[kind.value]}</option>)}
+            </select>
+          </div>
+
+          <div class="filter-row">
+            <span class="filter-row__label" id="filtro-status">Status</span>
+            <div role="group" aria-labelledby="filtro-status" style="display: flex; flex-wrap: wrap; gap: 0.4rem">
+              <button class="chip" type="button" data-filter-status="all" aria-pressed="true">Todos</button>
+              <button class="chip" type="button" data-filter-status="not-started" aria-pressed="false">Não iniciadas</button>
+              <button class="chip" type="button" data-filter-status="in-progress" aria-pressed="false">Em andamento</button>
+              <button class="chip" type="button" data-filter-status="completed" aria-pressed="false">Concluídas</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-status">
+          <span data-search-count aria-live="polite">Exibindo a trilha completa.</span>
+          <button class="btn btn--quiet btn--sm" type="button" data-clear-filters>Limpar filtros</button>
+        </div>
+      </div>
+
+      <div data-curriculum>
+        {
+          semesters.map((semester) => (
+            <section class="semester-block" id={`semestre-${semester.number}`} aria-labelledby={`semestre-${semester.number}-titulo`}>
+              <header class="semester-head">
+                <div class="semester-head__top">
+                  <span class="semester-head__num">{semester.number}º semestre · {semester.hours}h</span>
+                </div>
+                <h2 id={`semestre-${semester.number}-titulo`}>{semester.title}</h2>
+                <p class="semester-head__objective">{semester.objective}</p>
+                <div class="semester-head__facts">
+                  <span class="tag">{semester.disciplines.length} disciplinas</span>
+                  <span class="tag">{semester.project.hours}h de projeto integrador</span>
+                  {semester.criteria && <span class="tag tag--yellow">Critério: {semester.criteria.title}</span>}
+                </div>
+              </header>
+
+              {semester.disciplines.map((discipline, index) => (
+                <DisciplineCard discipline={discipline} open={semester.number === 1 && index === 0} />
+              ))}
+
+              <a class="card card--link card--accent" href={url(`/projetos/#${semester.project.id}`)}>
+                <div class="card__meta">
+                  <span class="card__num">Projeto Integrador {semester.project.roman}</span>
+                  <span class="tag tag--outline">{semester.project.hours}h</span>
+                </div>
+                <h3>{semester.project.name}</h3>
+                <p>{semester.project.delivery}</p>
+                <span class="card__footer">
+                  <span class="text-sm" style="font-weight: 600">Ver entrega e critérios</span>
+                  <Icon name="arrow-right" size={16} />
+                </span>
+              </a>
+            </section>
+          ))
+        }
+      </div>
+
+      <div data-search-results hidden>
+        <p class="search-status" style="margin-bottom: 1rem">
+          <span data-results-count></span>
+        </p>
+        <div class="search-results" data-results-list></div>
+        <div class="empty-state" data-results-empty hidden>
+          <Icon name="search" size={22} />
+          <p><strong>Nenhum resultado com esses filtros.</strong></p>
+          <p class="text-sm">Tente outro termo, remova filtros ou busque por uma tecnologia como “Python”.</p>
+        </div>
+      </div>
+
+      <script type="application/json" id="bd-search-index" set:html={JSON.stringify(searchIndex).replace(/</g, '\\u003c')} />
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { initTrilha } from '../../scripts/trilha';
+  initTrilha();
+</script>

@@ -1,0 +1,42 @@
+---
+import type { Resource } from '../lib/curriculum/types';
+import { RESOURCE_META } from '../lib/resources';
+import Icon from './Icon.astro';
+
+interface Props {
+  resources: Resource[];
+  title?: string;
+  compact?: boolean;
+}
+
+const { resources, title = 'Materiais', compact = false } = Astro.props;
+---
+
+<div>
+  <h4 class="discipline__section-title">{title}</h4>
+  <ul class="resources">
+    {
+      resources.map((resource) => (
+        <li>
+          <a class="resource" href={resource.url} rel="noopener noreferrer" target="_blank">
+            <span class="resource__icon" aria-hidden="true">
+              <Icon name={RESOURCE_META[resource.kind].icon} size={15} />
+            </span>
+            <span class="resource__text">
+              <span class="resource__label">{resource.label}</span>
+              {!compact && (
+                <span class="resource__meta">
+                  {RESOURCE_META[resource.kind].label} · {resource.domain}
+                </span>
+              )}
+            </span>
+            <span class="resource__arrow" aria-hidden="true">
+              <Icon name="external" size={15} />
+            </span>
+            <span class="sr-only">(abre em nova aba)</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>

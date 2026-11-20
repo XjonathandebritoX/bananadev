@@ -1,0 +1,312 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { getCurriculum } from '../lib/curriculum/load';
+import { SITE, url } from '../lib/site';
+import { TECH_TAGS } from '../lib/curriculum/taxonomy';
+
+const curriculum = getCurriculum();
+const { meta, semesters, projects, studyPlans } = curriculum;
+const totalDisciplineHours = curriculum.disciplines.reduce((total, discipline) => total + discipline.hours, 0);
+const stackLabels = TECH_TAGS.filter((tag) =>
+  ['python', 'javascript', 'typescript', 'react', 'fastapi', 'sql', 'git', 'docker', 'tests', 'security'].includes(tag.id),
+);
+
+const method = [
+  {
+    icon: 'map',
+    title: 'Curadoria antes de tudo',
+    text: 'Cada disciplina reúne videoaulas em português, documentação oficial e prática deliberada. A playlist abre o caminho; a documentação atualiza e resolve o que faltar.',
+  },
+  {
+    icon: 'terminal',
+    title: 'Aprender construindo',
+    text: 'Todo semestre termina em um projeto integrador público. O código é versionado, documentado e revisado como em um time real.',
+  },
+  {
+    icon: 'target',
+    title: 'Domínio demonstrado',
+    text: 'Concluir uma playlist não é dominar o assunto. Exercícios, laboratórios próprios e a explicação das decisões técnicas é que comprovam o aprendizado.',
+  },
+  {
+    icon: 'community',
+    title: 'Aberto por definição',
+    text: 'Currículo, plataforma e projetos sob licenças abertas. Qualquer pessoa pode estudar, adaptar, traduzir e contribuir.',
+  },
+];
+
+const highlights = [
+  { value: '2.400', suffix: 'h', label: 'carga horária planejada' },
+  { value: '6', suffix: '', label: 'semestres de 400h' },
+  { value: '45', suffix: '', label: 'disciplinas com ementa' },
+  { value: '6', suffix: '', label: 'projetos integradores' },
+];
+---
+
+<BaseLayout structuredData={{ '@type': ['WebSite', 'EducationalOccupationalProgram'], name: SITE.name }}>
+  <section class="hero">
+    <div class="container split split--hero">
+      <div>
+        <p class="eyebrow">Formação autodidata · open source · gratuita</p>
+        <h1>
+          Conhecimento aberto,<br />
+          <em>aprendizagem autônoma</em>.
+        </h1>
+        <p class="lead hero__lead">
+          O BananaDev organiza uma formação completa em Análise e Desenvolvimento de Sistemas: seis semestres,
+          45 disciplinas e seis projetos reais — com materiais gratuitos e curadoria aberta.
+        </p>
+        <div class="btn-group hero__actions">
+          <a class="btn btn--primary" href={url('/trilha/')}>
+            Começar pela trilha <Icon name="arrow-right" size={17} />
+          </a>
+          <a class="btn btn--ghost" href={url('/sobre/')}>Conhecer o projeto</a>
+        </div>
+        <p class="hero__footnote">
+          <Icon name="shield" size={14} />
+          Sem cadastro. Seu progresso fica salvo apenas neste navegador.
+        </p>
+      </div>
+
+      <div class="hero__art">
+        <div class="hero__disc">
+          <img
+            src={url('/brand/logo-512.png')}
+            alt="Logo do BananaDev: uma banana desenvolvedora, com fones de ouvido e óculos, programando em um computador."
+            width="512"
+            height="512"
+            fetchpriority="high"
+          />
+        </div>
+        <p class="hero__badge">Desde o primeiro commit</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="stats">
+      {
+        highlights.map((item) => (
+          <div class="stat">
+            <p class="stat__value">
+              {item.value}
+              {item.suffix && <small>{item.suffix}</small>}
+            </p>
+            <p class="stat__label">{item.label}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <section class="section" aria-labelledby="missao">
+    <div class="container split">
+      <div class="stack" style="gap: 1.2rem">
+        <p class="eyebrow">Missão</p>
+        <h2 id="missao" style="max-width: 18ch">
+          Todos temos potencial para <span class="highlight">aprender, construir e compartilhar</span>.
+        </h2>
+      </div>
+      <div class="prose">
+        <p>
+          A formação de um desenvolvedor não precisa começar por uma graduação tradicional, nem depender
+          exclusivamente de plataformas pagas. Com organização, disciplina e materiais de qualidade, é possível
+          construir uma trajetória sólida de aprendizagem autodidata.
+        </p>
+        <p>
+          O BananaDev transforma uma matriz curricular de Análise e Desenvolvimento de Sistemas em uma experiência
+          navegável — do primeiro algoritmo ao produto open source publicado. A carga horária é uma estimativa de
+          dedicação; não é um diploma e não substitui uma graduação reconhecida.
+        </p>
+        <div class="btn-group">
+          <a class="btn btn--ghost btn--sm" href={url('/manifesto/')}>Ler o manifesto</a>
+          <a class="btn btn--quiet btn--sm" href={url('/projetos/')}>Ver os projetos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--band" aria-labelledby="metodo">
+    <div class="container">
+      <div class="section__head">
+        <div class="stack" style="gap: 0.8rem">
+          <p class="eyebrow">Método</p>
+          <h2 id="metodo">Como a formação funciona</h2>
+        </div>
+        <p>
+          Um percurso por competências, com pré-requisitos claros, prática desde a primeira semana e entregas
+          públicas em cada etapa.
+        </p>
+      </div>
+      <div class="grid grid--4">
+        {
+          method.map((item) => (
+            <article class="card">
+              <span class="resource__icon" aria-hidden="true">
+                <Icon name={item.icon} size={17} />
+              </span>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="semestres">
+    <div class="container">
+      <div class="section__head">
+        <div class="stack" style="gap: 0.8rem">
+          <p class="eyebrow">Percursos</p>
+          <h2 id="semestres">Seis semestres, uma progressão</h2>
+        </div>
+        <p>Do raciocínio computacional ao produto em produção. Cada etapa tem objetivo, disciplinas e um projeto.</p>
+      </div>
+
+      <div class="semester-strip">
+        {
+          semesters.map((semester) => (
+            <a class="semester-row" href={url(`/trilha/#semestre-${semester.number}`)}>
+              <span class="semester-row__num" aria-hidden="true">
+                {String(semester.number).padStart(2, '0')}
+              </span>
+              <span>
+                <span class="semester-row__title">{semester.title}</span>
+                <span class="semester-row__meta">
+                  <span>{semester.hours}h</span>
+                  <span>{semester.disciplines.length} disciplinas</span>
+                  <span class="mono">PI {semester.project.roman}</span>
+                </span>
+              </span>
+              <span class="semester-row__project">
+                {semester.project.name}
+              </span>
+              <span class="semester-row__arrow" aria-hidden="true">
+                <Icon name="arrow-right" size={18} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+
+      <div class="btn-group" style="margin-top: 2rem">
+        <a class="btn btn--primary" href={url('/trilha/')}>
+          Abrir a matriz curricular <Icon name="layers" size={16} />
+        </a>
+        <a class="btn btn--ghost" href={url('/trilha/#busca')}>Buscar disciplina ou tecnologia</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--band" aria-labelledby="numeros">
+    <div class="container grid grid--2" style="gap: clamp(2rem, 5vw, 4rem)">
+      <div class="stack" style="gap: 1.2rem">
+        <p class="eyebrow">Carga horária</p>
+        <h2 id="numeros">Onde o tempo é investido</h2>
+        <p class="muted">
+          As 2.400 horas incluem vídeo, leitura, prática, debugging, exercícios, documentação, projetos e revisão —
+          não apenas a duração das playlists.
+        </p>
+        <div class="definition-list">
+          {
+            studyPlans.map((plan) => (
+              <div>
+                <dt>{plan.name}</dt>
+                <dd>
+                  {plan.hoursPerWeek}h por semana · {plan.weeks} semanas · cerca de {plan.months} meses
+                </dd>
+              </div>
+            ))
+          }
+        </div>
+        <p class="text-sm muted">Estimativas aritméticas de dedicação, não promessas de domínio ou empregabilidade.</p>
+      </div>
+
+      <div class="card" style="gap: 1.25rem">
+        <div class="card__top">
+          <h3 style="font-size: var(--step-1)">Distribuição estimada</h3>
+          <span class="tag tag--yellow">2.400h</span>
+        </div>
+        {
+          meta.distribution.map((item) => (
+            <div class="progress">
+              <div class="progress__head">
+                <span style="text-transform: capitalize">{item.label}</span>
+                <span class="progress__value">{item.percent}%</span>
+              </div>
+              <div class="progress__track">
+                <div class="progress__bar" style={`width: ${item.percent}%`} />
+              </div>
+            </div>
+          ))
+        }
+        <p class="text-sm muted">
+          {totalDisciplineHours}h em disciplinas e {meta.totalHours - totalDisciplineHours}h em projetos integradores.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="stack">
+    <div class="container">
+      <div class="section__head">
+        <div class="stack" style="gap: 0.8rem">
+          <p class="eyebrow">Stack principal</p>
+          <h2 id="stack">Tecnologias do núcleo</h2>
+        </div>
+        <p>
+          O núcleo mantém uma stack coesa. Outras linguagens e plataformas ficam nas especializações opcionais, sem
+          interromper a progressão.
+        </p>
+      </div>
+      <div class="tags" style="gap: 0.5rem">
+        {stackLabels.map((tag) => <span class="tag tag--yellow">{tag.label}</span>)}
+        <span class="tag">Git e GitHub</span>
+      </div>
+
+      <div class="grid grid--3" style="margin-top: 2.5rem">
+        {
+          projects.slice(0, 3).map((project) => (
+            <article class="card card--accent">
+              <div class="card__meta">
+                <span class="card__num">PI {project.roman}</span>
+                <span aria-hidden="true">·</span>
+                <span>{project.semester}º semestre</span>
+                <span class="tag tag--outline">{project.hours}h</span>
+              </div>
+              <h3>{project.name}</h3>
+              <p>{project.summary}</p>
+              <a class="card__footer" href={url('/projetos/')} style="text-decoration: none">
+                <span class="text-sm" style="font-weight: 600">Detalhes do projeto</span>
+                <Icon name="arrow-right" size={16} />
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--band">
+    <div class="container split split--hero" style="align-items: center">
+      <div class="stack" style="gap: 1.4rem">
+        <p class="quote">
+          “O primeiro passo não é saber tudo. É começar — e continuar.”
+        </p>
+        <p class="muted">O BananaDev existe para tornar esse primeiro passo mais claro.</p>
+      </div>
+      <div class="card" style="gap: 1rem">
+        <h3>Pronto para começar?</h3>
+        <p>
+          Abra a trilha, escolha a primeira disciplina e marque seu avanço. O progresso é salvo localmente, sem
+          conta e sem enviar dados para servidores.
+        </p>
+        <div class="btn-group">
+          <a class="btn btn--primary" href={url('/trilha/')}>Começar agora</a>
+          <a class="btn btn--ghost" href={url('/progresso/')}>Meu progresso</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

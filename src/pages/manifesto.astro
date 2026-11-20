@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { getCurriculum } from '../lib/curriculum/load';
+import { SITE, url } from '../lib/site';
+
+const curriculum = getCurriculum();
+---
+
+<BaseLayout
+  title="Manifesto"
+  description="O manifesto do BananaDev: conhecimento aberto, aprendizagem autônoma e tecnologia ao alcance de todos."
+>
+  <section class="page-head">
+    <div class="container">
+      <nav aria-label="Você está aqui">
+        <ol class="breadcrumbs" role="list">
+          <li><a href={url('/')}>Início</a></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page">Manifesto</li>
+        </ol>
+      </nav>
+      <p class="eyebrow">Manifesto</p>
+      <h1>O conhecimento está diante de nós.</h1>
+      <p class="lead">
+        Uma formação em tecnologia não deveria depender de sorte financeira, de um diploma caro ou de permissão de
+        alguém. Deveria depender de curiosidade, método e prática.
+      </p>
+    </div>
+  </section>
+
+  <div class="container section">
+    <div class="split" style="align-items: start">
+      <div class="manifesto stack" style="gap: 0">
+        <p>
+          Aprender a programar é aprender a <strong>transformar problemas em passos executáveis</strong>. É uma
+          habilidade humana, não um privilégio de quem nasceu perto de um computador.
+        </p>
+        <p>
+          O BananaDev nasce de uma constatação simples: existem materiais gratuitos excelentes espalhados pela
+          internet. O que falta, quase sempre, é <strong>ordem</strong> — saber o que estudar, em que sequência, com
+          qual profundidade e como provar a si mesmo que aprendeu.
+        </p>
+        <p>
+          Por isso organizamos uma matriz completa, com ementas, cargas horárias, pré-requisitos e entregas públicas.
+          Não para engessar o estudo, mas para dar direção a ele.
+        </p>
+      </div>
+
+      <div class="stack" style="gap: 1.4rem">
+        <div class="callout">
+          <strong>Não vendemos atalhos</strong>
+          <p>
+            Não prometemos emprego, salário ou diploma. Prometemos clareza sobre o caminho e honestidade sobre o
+            esforço necessário.
+          </p>
+        </div>
+        <div class="card">
+          <p class="quote" style="font-size: var(--step-2)">
+            “Aprender é um ato de autonomia. Ensinar é um ato de generosidade.”
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="section section--band">
+    <div class="container">
+      <div class="section__head">
+        <div class="stack" style="gap: 0.6rem">
+          <p class="eyebrow">Compromissos</p>
+          <h2>O que defendemos</h2>
+        </div>
+      </div>
+      <ol class="numbered-list" style="max-width: 54rem">
+        <li>
+          <div>
+            <h3 style="font-size: var(--step-1)">Conhecimento aberto</h3>
+            <p class="muted">
+              Currículo sob CC BY 4.0 e código sob MIT. Qualquer pessoa pode estudar, adaptar, traduzir e usar
+              comercialmente, preservando a atribuição.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3 style="font-size: var(--step-1)">Autodidatismo com método</h3>
+            <p class="muted">
+              Autonomia não é estudar sozinho sem rumo. É saber onde está, o que vem depois e como demonstrar
+              domínio.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3 style="font-size: var(--step-1)">Prática acima de consumo</h3>
+            <p class="muted">
+              Assistir aula não é aprender. O critério é construir, testar, documentar e explicar as decisões.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3 style="font-size: var(--step-1)">Tecnologia como meio</h3>
+            <p class="muted">
+              A stack principal existe para reduzir dispersão. Linguagens são ferramentas; pensamento estruturado é
+              o que permanece.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3 style="font-size: var(--step-1)">Comunidade e contribuição</h3>
+            <p class="muted">
+              Todo projeto termina em código público. Contribuir com terceiros faz parte da formação, não é extra.
+            </p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3 style="font-size: var(--step-1)">Privacidade por padrão</h3>
+            <p class="muted">
+              Sem contas, sem rastreadores, sem analytics invasivo. O progresso fica no seu navegador.
+            </p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split split--hero" style="align-items: center">
+      <div class="stack" style="gap: 1.2rem">
+        <p class="eyebrow">Princípios de execução</p>
+        <h2>Como transformamos a ideia em prática</h2>
+        <p class="muted">
+          Estes princípios vêm diretamente da matriz curricular e orientam cada decisão do projeto.
+        </p>
+      </div>
+      <ul class="footer-steps">
+        {curriculum.meta.principles.map((principle) => <li>{principle}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <div class="container section--tight">
+    <div class="card" style="align-items: start; gap: 1rem">
+      <h2 style="font-size: var(--step-2)">Comece pequeno. Continue.</h2>
+      <p class="lead" style="font-size: var(--step-1)">
+        O primeiro passo é abrir a primeira disciplina. O segundo é escrever a primeira linha de código. O resto é
+        repetição consciente.
+      </p>
+      <div class="btn-group">
+        <a class="btn btn--primary" href={url('/trilha/')}>Abrir a trilha <Icon name="arrow-right" size={16} /></a>
+        <a class="btn btn--ghost" href={SITE.repo} target="_blank" rel="noopener noreferrer">Ver o código-fonte</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

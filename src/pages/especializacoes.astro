@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import ResourceList from '../components/ResourceList.astro';
+import { getCurriculum } from '../lib/curriculum/load';
+import { url } from '../lib/site';
+
+const curriculum = getCurriculum();
+const specialties = curriculum.specializations;
+---
+
+<BaseLayout
+  title="Especializações opcionais"
+  description="Trilhas opcionais do BananaDev: Java/Spring, PHP/Laravel, C#/.NET, Node.js, Flutter, GraphQL, Kubernetes, Go e C/C++. Estude depois do núcleo, sem alterar a progressão principal."
+>
+  <section class="page-head">
+    <div class="container">
+      <nav aria-label="Você está aqui">
+        <ol class="breadcrumbs" role="list">
+          <li><a href={url('/')}>Início</a></li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page">Especializações</li>
+        </ol>
+      </nav>
+      <p class="eyebrow">Depois do núcleo</p>
+      <h1>Especializações opcionais</h1>
+      <p class="lead">
+        O núcleo forma em Python, FastAPI e React. As trilhas abaixo são alternativas para ampliar repertório — uma
+        por vez, sem substituir as disciplinas obrigatórias.
+      </p>
+      <div class="discipline-detail__meta">
+        <span class="tag tag--yellow">{specialties.length} trilhas</span>
+        <span class="tag">Escolha uma por vez</span>
+        <span class="tag">Laboratório próprio obrigatório</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="container section">
+    <div class="callout callout--warning" style="margin-bottom: 2rem">
+      <strong>Como usar esta página</strong>
+      <p>
+        As especializações não são pré-requisitos para concluir a formação principal. Elas alimentam a disciplina
+        <em> Eletiva Tecnológica</em> (45h, 6º semestre): escolha uma trilha e conclua um laboratório próprio.
+      </p>
+    </div>
+
+    <div class="grid grid--2">
+      {
+        specialties.map((specialty) => (
+          <article class="card" id={specialty.id}>
+            <div class="card__top">
+              <h2 style="font-size: var(--step-1)">{specialty.name}</h2>
+              <span class="tag tag--outline">Opcional</span>
+            </div>
+            <p>{specialty.description}</p>
+            <ResourceList resources={specialty.resources} title="Material de partida" compact />
+            <div class="card__footer">
+              <a class="btn btn--quiet btn--sm" href={url('/trilha/disciplinas/eletiva-tecnologica/')}>
+                Disciplina Eletiva Tecnológica <Icon name="arrow-right" size={14} />
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

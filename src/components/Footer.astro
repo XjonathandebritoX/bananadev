@@ -1,0 +1,69 @@
+---
+import { FOOTER_NAV, SITE, url } from '../lib/site';
+import Icon from './Icon.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href={url('/')}>
+          <span class="brand__mark">
+            <img src={url('/brand/logo-256.png')} alt="" width="256" height="256" decoding="async" loading="lazy" />
+          </span>
+          <span class="brand__text">
+            <span class="brand__name"><span>#</span>BananaDev</span>
+            <span class="brand__tag">Conhecimento aberto</span>
+          </span>
+        </a>
+        <p>
+          Formação autodidata, aberta e gratuita em Análise e Desenvolvimento de Sistemas. Conteúdo curricular
+          sob {SITE.contentLicense} e código sob {SITE.license}.
+        </p>
+        <p class="text-sm muted">
+          Projeto independente. Não concede diploma de graduação nem equivalência a curso superior.
+        </p>
+      </div>
+
+      {
+        FOOTER_NAV.map((group) => (
+          <div class="footer-col">
+            <h3>{group.title}</h3>
+            <ul role="list">
+              {group.links.map((link) => (
+                <li>
+                  <a href={url(link.href)}>{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+
+      <div class="footer-col">
+        <h3>Comunidade</h3>
+        <ul role="list">
+          <li>
+            <a href={SITE.repo} rel="noopener noreferrer" target="_blank">
+              GitHub <Icon name="external" size={12} />
+            </a>
+          </li>
+          <li><a href={SITE.issues} rel="noopener noreferrer" target="_blank">Issues</a></li>
+          <li><a href={`${SITE.repo}/blob/main/CONTRIBUTING.md`} rel="noopener noreferrer" target="_blank">Contribuir</a></li>
+          <li><a href={`${SITE.repo}/blob/main/SECURITY.md`} rel="noopener noreferrer" target="_blank">Segurança</a></li>
+          <li><a href={`${SITE.repo}/blob/main/LICENSE`} rel="noopener noreferrer" target="_blank">Licença MIT</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>
+        © {year} {SITE.author}. Conteúdo original sob {SITE.contentLicense}. Materiais de terceiros pertencem aos
+        seus respectivos autores — veja <a href={`${SITE.repo}/blob/main/NOTICE.md`} target="_blank" rel="noopener noreferrer">NOTICE.md</a>.
+      </p>
+      <p class="mono">2.400h · 6 semestres · 45 disciplinas</p>
+    </div>
+  </div>
+</footer>

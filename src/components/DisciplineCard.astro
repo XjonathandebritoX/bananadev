@@ -1,0 +1,77 @@
+---
+import type { Discipline } from '../lib/curriculum/types';
+import { RESOURCE_META } from '../lib/resources';
+import { TECH_TAGS } from '../lib/curriculum/taxonomy';
+import { url } from '../lib/site';
+import Icon from './Icon.astro';
+import ResourceList from './ResourceList.astro';
+import StatusControl from './StatusControl.astro';
+
+interface Props {
+  discipline: Discipline;
+  open?: boolean;
+}
+
+const { discipline, open = false } = Astro.props;
+const kinds = [...new Set(discipline.resources.map((resource) => resource.kind))];
+const techs = discipline.technologies
+  .map((id) => TECH_TAGS.find((tag) => tag.id === id)?.label)
+  .filter((label): label is string => Boolean(label))
+  .slice(0, 4);
+---
+
+<details class="discipline" data-discipline-card={discipline.id} data-status="not-started" id={discipline.id} open={open}>
+  <summary class="discipline__summary">
+    <span class="discipline__num" aria-hidden="true">{String(discipline.number).padStart(2, '0')}</span>
+    <span>
+      <span class="discipline__title">{discipline.name}</span>
+      <span class="discipline__meta">
+        <span class="mono">{discipline.hours}h</span>
+        <span aria-hidden="true">·</span>
+        <span data-status-text data-item-id={discipline.id}>{kinds.map((kind) => RESOURCE_META[kind].label).join(' · ')}</span>
+      </span>
+    </span>
+    <span class="discipline__toggle" aria-hidden="true"><Icon name="chevron" size={16} /></span>
+  </summary>
+
+  <div class="discipline__body">
+    <div>
+      <h4 class="discipline__section-title">Ementa</h4>
+      <p class="discipline__content">{discipline.content}</p>
+    </div>
+
+    {
+      discipline.notes.length > 0 && (
+        <div class="stack" style="gap: 0.5rem">
+          {discipline.notes.map((note) => (
+            <p class="note">{note}</p>
+          ))}
+        </div>
+      )
+    }
+
+    {discipline.resources.length > 0 && <ResourceList resources={discipline.resources} />}
+
+    <div class="btn-group">
+      <a class="btn btn--ghost btn--sm" href={url(discipline.href)}>
+        Ver disciplina completa <Icon name="arrow-right" size={15} />
+      </a>
+    </div>
+
+    <div class="discipline__progress">
+      <h4 class="discipline__section-title">Seu progresso</h4>
+      <StatusControl id={discipline.id} kind="discipline" label={discipline.name} compact />
+    </div>
+
+    {
+      techs.length > 0 && (
+        <div class="tags">
+          {techs.map((tech) => (
+            <span class="tag tag--outline">{tech}</span>
+          ))}
+          <span class="tag tag--outline">{discipline.semester}º semestre</span>
+        </div>
+      )
+    }
+  </div>
+</details>
