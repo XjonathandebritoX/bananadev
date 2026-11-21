@@ -60,7 +60,7 @@ function isBuildTool(pkgName: string): boolean {
   return BUILD_TOOLS.has(pkgName) || pkgName.startsWith('@astrojs/');
 }
 
-function main() {
+async function main(): Promise<void> {
   console.log('🔍 Auditoria de dependências (modo site estático)...\n');
 
   // Executa npm audit em JSON
@@ -106,7 +106,7 @@ function main() {
   process.exit(1);
 }
 
-main().catch((error) => {
+main().catch((error: Error) => {
   console.error('❌ Erro na auditoria:', error);
   process.exit(1);
 });
