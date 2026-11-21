@@ -314,8 +314,8 @@ export function parseCurriculum(markdown: string): Curriculum {
 
   // ---- Cabeçalho / metadados -------------------------------------------------
   const titleLine = header.find((line) => /^#\s+/.test(line)) ?? '';
-  const titleMatch = titleLine.match(/^#\s+(#?#BananaDev)\s*[-–—]\s*(.+)$/);
-  const title = titleMatch ? titleMatch[1] : '##BananaDev';
+  const titleMatch = titleLine.match(/^#\s+(#BananaDev)\s*[-–—]\s*(.+)$/);
+  const title = titleMatch ? titleMatch[1] : '#BananaDev';
   const subtitle = titleMatch ? titleMatch[2].trim() : 'Formação autodidata em Análise e Desenvolvimento de Sistemas';
 
   const headerText = header.join('\n');

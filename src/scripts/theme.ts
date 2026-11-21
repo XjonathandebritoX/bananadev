@@ -4,7 +4,7 @@ export const THEME_KEY = 'bananadev.theme';
 const DARK_QUERY = '(prefers-color-scheme: dark)';
 
 export function systemTheme(): 'light' | 'dark' {
-  if (typeof window === 'undefined' || !window.matchMedia) return 'light';
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return 'light';
   try {
     return window.matchMedia(DARK_QUERY).matches ? 'dark' : 'light';
   } catch {
@@ -27,19 +27,21 @@ export function resolveTheme(pref: ThemePref): 'light' | 'dark' {
 }
 
 function updateToggle(pref: ThemePref): void {
+  const theme = resolveTheme(pref);
   for (const button of document.querySelectorAll<HTMLButtonElement>('[data-theme-set]')) {
     button.setAttribute('aria-pressed', String(button.dataset.themeSet === pref));
   }
   const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
   if (meta) {
-    meta.content = resolveTheme(pref) === 'dark' ? '#131109' : '#fbf7ed';
+    meta.content = theme === 'dark' ? '#131109' : '#fbf7ed';
   }
 }
 
 export function applyTheme(pref: ThemePref, persist = true): void {
   const theme = resolveTheme(pref);
-  document.documentElement.dataset.theme = theme;
-  document.documentElement.dataset.themePref = pref;
+  const root = document.documentElement;
+  root.setAttribute('data-theme', theme);
+  root.setAttribute('data-theme-pref', pref);
   if (persist) {
     try {
       localStorage.setItem(THEME_KEY, pref);
@@ -50,25 +52,30 @@ export function applyTheme(pref: ThemePref, persist = true): void {
   updateToggle(pref);
 }
 
+let initialized = false;
+
 /** Inicializa os controles de tema e o listener do sistema. */
 export function initTheme(): void {
-  // Aplica o tema inicial imediatamente
-  const pref = readPreference(localStorage);
-  applyTheme(pref, false);
+  if (initialized) return;
+  initialized = true;
 
-  // Usa delegação de eventos no document para capturar cliques nos botões de tema
-  // Funciona mesmo se os botões forem adicionados dinamicamente
+  // Sincroniza o estado atual (o bootstrap inline já aplicou o tema antes da pintura).
+  applyTheme(readPreference(localStorage), false);
+
+  // Delegação de eventos: funciona também para botões adicionados depois.
   document.addEventListener('click', (event) => {
-    const target = event.target as HTMLElement;
+    const target = event.target;
+    if (!(target instanceof Element)) return;
     const button = target.closest<HTMLButtonElement>('[data-theme-set]');
     if (!button) return;
-
-    const next = button.dataset.themeSet as ThemePref;
-    applyTheme(next);
+    const next = button.dataset.themeSet;
+    if (next === 'light' || next === 'dark' || next === 'system') {
+      applyTheme(next);
+    }
   });
 
-  // Listener para mudança de preferência do sistema
-  if (window.matchMedia) {
+  // Mantém o modo "system" sincronizado com a preferência do sistema operacional.
+  if (typeof window.matchMedia === 'function') {
     const media = window.matchMedia(DARK_QUERY);
     const handle = () => {
       if (readPreference(localStorage) === 'system') {
@@ -78,17 +85,17 @@ export function initTheme(): void {
     if (typeof media.addEventListener === 'function') {
       media.addEventListener('change', handle);
     } else {
-      // Fallback for older browsers: addListener is deprecated but still exists
-      (media as MediaQueryList & { addListener?: (callback: (e: MediaQueryListEvent) => void) => void }).addListener?.(handle);
+      const legacy = media as unknown as {
+        addListener?: (callback: (event: MediaQueryListEvent) => void) => void;
+      };
+      legacy.addListener?.(handle);
     }
   }
-}
 
-// Garante que o tema seja inicializado mesmo se o script carregar antes do DOM
-if (typeof document !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTheme);
-  } else {
-    initTheme();
-  }
+  // Sincroniza a preferência entre abas abertas.
+  window.addEventListener('storage', (event) => {
+    if (event.key === THEME_KEY) {
+      applyTheme(readPreference(localStorage), false);
+    }
+  });
 }

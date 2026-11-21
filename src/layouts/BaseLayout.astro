@@ -31,7 +31,7 @@ const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: SITE.name,
-  alternateName: '##BananaDev',
+  alternateName: '#BananaDev',
   url: new URL(url('/'), Astro.site).toString(),
   description: SITE.description,
   inLanguage: 'pt-BR',
@@ -42,7 +42,7 @@ const websiteSchema = {
 ---
 
 <!doctype html>
-<html lang="pt-BR" data-theme="light">
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -76,6 +76,26 @@ const websiteSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
+    <!--
+      Bootstrap síncrono do tema: roda antes da primeira pintura para evitar flash
+      de tema incorreto. Mantido inline (is:inline) e autorizado via hash na CSP.
+    -->
+    <script is:inline>
+      (function () {
+        try {
+          var pref = localStorage.getItem('bananadev.theme');
+          if (pref !== 'light' && pref !== 'dark') pref = 'system';
+          var dark = !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var theme = pref === 'system' ? (dark ? 'dark' : 'light') : pref;
+          var root = document.documentElement;
+          root.setAttribute('data-theme', theme);
+          root.setAttribute('data-theme-pref', pref);
+        } catch (error) {
+          /* localStorage indisponível: o CSS cobre a preferência do sistema */
+        }
+      })();
+    </script>
+
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
   </head>
   <body>
@@ -93,7 +113,10 @@ const websiteSchema = {
     </button>
 
     <script>
+      import { initTheme } from '../scripts/theme';
       import { initShell } from '../scripts/nav';
+
+      initTheme();
       initShell();
     </script>
   </body>

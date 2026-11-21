@@ -344,6 +344,7 @@ samp {
   font-weight: 650;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  text-wrap: balance;
   color: var(--ink-3);
 }
 
@@ -731,8 +732,8 @@ samp {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 2.15rem;
+  height: 2.15rem;
   border: 0;
   border-radius: 50%;
   background: transparent;
@@ -1491,6 +1492,29 @@ samp {
   gap: 0.45rem;
 }
 
+.progress-hero {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (max-width: 560px) {
+  .progress-hero {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 1.1rem;
+  }
+  .progress-hero > .stack {
+    width: 100%;
+    text-align: left;
+  }
+  .progress-hero .progress-ring {
+    width: 7rem;
+    height: 7rem;
+  }
+}
+
 .progress__head {
   display: flex;
   align-items: baseline;
@@ -1628,6 +1652,7 @@ samp {
 }
 
 .status-dot {
+  display: inline-block;
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
@@ -1896,6 +1921,12 @@ samp {
   text-decoration-color: var(--yellow-500);
   text-decoration-thickness: 2px;
   font-weight: 550;
+}
+
+.prose a.btn {
+  color: var(--btn-fg);
+  text-decoration: none;
+  font-weight: 600;
 }
 
 .prose blockquote {
@@ -2334,8 +2365,8 @@ samp {
 
 @media (max-width: 380px) {
   .theme-toggle button {
-    width: 1.85rem;
-    height: 1.85rem;
+    width: 2rem;
+    height: 2rem;
   }
   .icon-btn {
     width: 2.3rem;
@@ -2432,6 +2463,15 @@ samp {
   flex-wrap: wrap;
   gap: 0.45rem;
   margin-top: var(--gap-4);
+}
+
+@media (max-width: 480px) {
+  .discipline-detail__meta .tag {
+    max-width: 100%;
+    white-space: normal;
+    line-height: 1.35;
+    border-radius: var(--radius-s);
+  }
 }
 
 .discipline-detail {

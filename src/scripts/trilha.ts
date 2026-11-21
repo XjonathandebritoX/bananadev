@@ -136,7 +136,7 @@ export function initTrilha(): void {
     if (resultsEmpty) resultsEmpty.hidden = results.length > 0;
     const label = results.length === 1 ? '1 resultado' : `${results.length} resultados`;
     resultsCount.textContent = `${label} para os filtros atuais.`;
-    searchCount.textContent = `${label} encontrados.`;
+    searchCount.textContent = `${label} ${results.length === 1 ? 'encontrado' : 'encontrados'}.`;
   };
 
   const setPressed = (selector: string, active: Element | null) => {
