@@ -77,7 +77,7 @@ const websiteSchema = {
     <meta name="twitter:image" content={ogImage} />
 
     <!--
-      Bootstrap síncrono do tema: roda antes da primeira pintura para evitar flash
+      Bootstrap sincrono do tema: roda antes da primeira pintura para evitar flash
       de tema incorreto. Mantido inline (is:inline) e autorizado via hash na CSP.
     -->
     <script is:inline>
@@ -91,7 +91,7 @@ const websiteSchema = {
           root.setAttribute('data-theme', theme);
           root.setAttribute('data-theme-pref', pref);
         } catch (error) {
-          /* localStorage indisponível: o CSS cobre a preferência do sistema */
+          /* localStorage indisponivel: o CSS cobre a preferencia do sistema */
         }
       })();
     </script>
