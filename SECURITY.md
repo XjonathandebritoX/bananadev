@@ -50,4 +50,4 @@ Agradecemos a pesquisadores que seguem divulgação responsável. Não oferecemo
 ## Contato
 
 - Security Advisory (recomendado): https://github.com/XjonathandebritoX/bananadev/security/advisories
-- Mantenedor: XjonathandebritoX@users.noreply.github.com
+- Mantenedor: 96991451+XjonathandebritoX@users.noreply.github.com
