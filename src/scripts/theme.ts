@@ -5,7 +5,11 @@ const DARK_QUERY = '(prefers-color-scheme: dark)';
 
 export function systemTheme(): 'light' | 'dark' {
   if (typeof window === 'undefined' || !window.matchMedia) return 'light';
-  return window.matchMedia(DARK_QUERY).matches ? 'dark' : 'light';
+  try {
+    return window.matchMedia(DARK_QUERY).matches ? 'dark' : 'light';
+  } catch {
+    return 'light';
+  }
 }
 
 export function readPreference(storage: Pick<Storage, 'getItem'>): ThemePref {
