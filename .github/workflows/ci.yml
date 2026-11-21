@@ -151,8 +151,8 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
-      - name: Auditoria de dependências (falha em high/critical)
-        run: npm audit --audit-level=high
+      - name: Auditoria de dependências (site estático - ignora ferramentas de build)
+        run: npx tsx scripts/audit-deps.ts
 
   # Testes E2E opcionais (comentados por padrão para velocidade)
   # Descomente para ativar no CI
