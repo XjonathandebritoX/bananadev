@@ -76,20 +76,6 @@ const websiteSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <script is:inline>
-      (function () {
-        try {
-          var pref = localStorage.getItem('bananadev.theme');
-          var system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-          var theme = pref === 'light' || pref === 'dark' ? pref : system;
-          document.documentElement.dataset.theme = theme;
-          document.documentElement.dataset.themePref = pref || 'system';
-        } catch (error) {
-          document.documentElement.dataset.theme = 'light';
-        }
-      })();
-    </script>
-
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
   </head>
   <body>
