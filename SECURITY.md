@@ -8,7 +8,10 @@ Como o #BananaDev é uma aplicação estática sem back-end, banco de dados ou a
 
 **Não abra issues públicas para vulnerabilidades de segurança.**
 
-Envie um e-mail para **security@bananadev.local** (ou abra uma [Security Advisory privada](https://github.com/XjonathandebritoX/bananadev/security/advisories/new) no GitHub) com:
+Use o recurso de **Private Vulnerability Reporting** do GitHub:
+[Abrir Security Advisory privada](https://github.com/XjonathandebritoX/bananadev/security/advisories/new)
+
+Inclua:
 
 - Descrição da vulnerabilidade
 - Passos para reproduzir
@@ -46,5 +49,5 @@ Agradecemos a pesquisadores que seguem divulgação responsável. Não oferecemo
 
 ## Contato
 
-- Security Advisory: https://github.com/XjonathandebritoX/bananadev/security/advisories
-- E-mail: security@bananadev.local (redireciona para o mantenedor)
+- Security Advisory (recomendado): https://github.com/XjonathandebritoX/bananadev/security/advisories
+- Mantenedor: XjonathandebritoX@users.noreply.github.com

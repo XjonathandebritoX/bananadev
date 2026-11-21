@@ -34,7 +34,7 @@ Este Código de Conduta se aplica em todos os espaços da comunidade (GitHub, is
 
 ## Aplicação
 
-Casos de comportamento abusivo, assediador ou inaceitável podem ser reportados à equipe de moderação em **conduct@bananadev.local**. Todas as denúncias serão analisadas e investigadas prontamente e de forma justa.
+Casos de comportamento abusivo, assediador ou inaceitável podem ser reportados à equipe de moderação em **XjonathandebritoX@users.noreply.github.com**. Todas as denúncias serão analisadas e investigadas prontamente e de forma justa.
 
 Mantenedores são obrigados a respeitar a privacidade e a segurança do relator de qualquer incidente.
 
