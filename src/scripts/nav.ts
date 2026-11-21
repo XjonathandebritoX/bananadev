@@ -1,4 +1,4 @@
-import { initTheme } from './theme';
+// initTheme is auto-initialized in theme.ts
 
 function initMobileNav(): void {
   const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
@@ -79,7 +79,6 @@ function initActiveSection(): void {
 }
 
 export function initShell(): void {
-  initTheme();
   initMobileNav();
   initBackToTop();
   initActiveSection();

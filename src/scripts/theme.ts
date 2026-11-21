@@ -48,20 +48,28 @@ export function applyTheme(pref: ThemePref, persist = true): void {
 
 /** Inicializa os controles de tema e o listener do sistema. */
 export function initTheme(): void {
+  // Aplica o tema inicial imediatamente
   const pref = readPreference(localStorage);
   applyTheme(pref, false);
 
-  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-theme-set]')) {
-    button.addEventListener('click', () => {
-      const next = button.dataset.themeSet as ThemePref;
-      applyTheme(next);
-    });
-  }
+  // Usa delegação de eventos no document para capturar cliques nos botões de tema
+  // Funciona mesmo se os botões forem adicionados dinamicamente
+  document.addEventListener('click', (event) => {
+    const target = event.target as HTMLElement;
+    const button = target.closest<HTMLButtonElement>('[data-theme-set]');
+    if (!button) return;
 
+    const next = button.dataset.themeSet as ThemePref;
+    applyTheme(next);
+  });
+
+  // Listener para mudança de preferência do sistema
   if (window.matchMedia) {
     const media = window.matchMedia(DARK_QUERY);
     const handle = () => {
-      if (readPreference(localStorage) === 'system') applyTheme('system', false);
+      if (readPreference(localStorage) === 'system') {
+        applyTheme('system', false);
+      }
     };
     if (typeof media.addEventListener === 'function') {
       media.addEventListener('change', handle);
@@ -69,5 +77,14 @@ export function initTheme(): void {
       // Fallback for older browsers: addListener is deprecated but still exists
       (media as MediaQueryList & { addListener?: (callback: (e: MediaQueryListEvent) => void) => void }).addListener?.(handle);
     }
+  }
+}
+
+// Garante que o tema seja inicializado mesmo se o script carregar antes do DOM
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTheme);
+  } else {
+    initTheme();
   }
 }
