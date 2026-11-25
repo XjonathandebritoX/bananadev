@@ -87,6 +87,7 @@ function initCarousels(): void {
   for (const carousel of carousels) {
     const track = carousel.querySelector<HTMLElement>('[data-carousel-track]');
     const next = carousel.querySelector<HTMLButtonElement>('[data-carousel-next]');
+    const prev = carousel.querySelector<HTMLButtonElement>('[data-carousel-prev]');
     if (!track || !next) continue;
 
     const step = () => {
@@ -95,32 +96,33 @@ function initCarousels(): void {
       return card ? card.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
     };
 
+    const atStart = () => track.scrollLeft <= 4;
     const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
 
     const update = () => {
+      const start = atStart();
       const end = atEnd();
+      carousel.dataset.atStart = String(start);
       carousel.dataset.atEnd = String(end);
-      next.setAttribute('aria-label', end ? 'Voltar ao início dos projetos' : 'Ver próximos projetos');
+      next.disabled = end;
+      if (prev) prev.disabled = start;
     };
 
     update();
     track.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
 
-    next.addEventListener('click', () => {
-      const behavior: ScrollBehavior = reducedMotion() ? 'auto' : 'smooth';
-      if (atEnd()) {
-        track.scrollTo({ left: 0, behavior });
-      } else {
-        track.scrollBy({ left: step(), behavior });
-      }
-    });
+    const scroll = (direction: 1 | -1) => {
+      track.scrollBy({ left: direction * step(), behavior: reducedMotion() ? 'auto' : 'smooth' });
+    };
+
+    next.addEventListener('click', () => scroll(1));
+    prev?.addEventListener('click', () => scroll(-1));
 
     track.addEventListener('keydown', (event) => {
       if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
       event.preventDefault();
-      const direction = event.key === 'ArrowRight' ? 1 : -1;
-      track.scrollBy({ left: direction * step(), behavior: reducedMotion() ? 'auto' : 'smooth' });
+      scroll(event.key === 'ArrowRight' ? 1 : -1);
     });
   }
 }

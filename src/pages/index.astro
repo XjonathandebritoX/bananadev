@@ -275,6 +275,15 @@ const highlights = [
       </div>
 
       <div class="project-carousel" data-carousel>
+        <button
+          class="project-carousel__prev"
+          type="button"
+          data-carousel-prev
+          aria-controls="projetos-track"
+          aria-label="Ver projetos anteriores"
+        >
+          <Icon name="arrow-left" size={18} />
+        </button>
         <div
           class="project-carousel__track"
           id="projetos-track"
@@ -371,25 +380,35 @@ const highlights = [
     border-radius: var(--radius);
   }
 
+  .project-carousel::before,
   .project-carousel::after {
     content: '';
     position: absolute;
     inset-block: 0 0.9rem;
-    right: 0;
     width: 4rem;
-    background: linear-gradient(to right, transparent, var(--paper) 85%);
     pointer-events: none;
     transition: opacity 0.2s ease;
   }
 
+  .project-carousel::before {
+    left: 0;
+    background: linear-gradient(to left, transparent, var(--paper) 85%);
+  }
+
+  .project-carousel::after {
+    right: 0;
+    background: linear-gradient(to right, transparent, var(--paper) 85%);
+  }
+
+  .project-carousel[data-at-start='true']::before,
   .project-carousel[data-at-end='true']::after {
     opacity: 0;
   }
 
+  .project-carousel__prev,
   .project-carousel__next {
     position: absolute;
     top: 50%;
-    right: -0.75rem;
     transform: translateY(-50%);
     display: inline-flex;
     align-items: center;
@@ -403,17 +422,33 @@ const highlights = [
     box-shadow: var(--shadow-m);
     cursor: pointer;
     z-index: 2;
-    transition: background 0.2s ease, border-color 0.2s ease;
+    transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
   }
 
+  .project-carousel__prev {
+    left: -0.75rem;
+  }
+
+  .project-carousel__next {
+    right: -0.75rem;
+  }
+
+  .project-carousel__prev:hover,
   .project-carousel__next:hover {
     background: var(--surface-2);
     border-color: var(--line-2);
   }
 
+  .project-carousel__prev:focus-visible,
   .project-carousel__next:focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
+  }
+
+  .project-carousel__prev:disabled,
+  .project-carousel__next:disabled {
+    opacity: 0;
+    pointer-events: none;
   }
 
   @media (max-width: 1023px) {
@@ -425,6 +460,10 @@ const highlights = [
   @media (max-width: 700px) {
     .project-carousel__track {
       grid-auto-columns: min(86%, 22rem);
+    }
+
+    .project-carousel__prev {
+      left: -0.35rem;
     }
 
     .project-carousel__next {
