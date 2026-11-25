@@ -4,26 +4,26 @@ import Icon from '../components/Icon.astro';
 import { url } from '../lib/site';
 ---
 
-<BaseLayout title="Pagina nao encontrada" description="A pagina que voce procura nao existe no #BananaDev." noindex>
+<BaseLayout title="Página não encontrada" description="A página que você procura não existe no #BananaDev." noindex>
   <section class="section">
     <div class="container" style="max-width: 44rem">
       <p class="eyebrow">Erro 404</p>
-      <h1 style="font-size: var(--step-4)">Essa pagina saiu da trilha.</h1>
+      <h1 style="font-size: var(--step-4)">Essa página saiu da trilha.</h1>
       <p class="lead">
-        O endereco pode ter mudado ou nunca ter existido. Nada de preocupar: o caminho de volta e curto.
+        O endereço pode ter mudado ou nunca ter existido. Nada de preocupar: o caminho de volta é curto.
       </p>
       <div class="btn-group" style="margin-top: 1.8rem">
         <a class="btn btn--primary" href={url('/trilha/')}>Abrir a trilha <Icon name="arrow-right" size={16} /></a>
-        <a class="btn btn--ghost" href={url('/')}>Voltar ao inicio</a>
+        <a class="btn btn--ghost" href={url('/')}>Voltar ao início</a>
       </div>
       <div class="grid grid--2" style="margin-top: 2.5rem">
         <a class="card card--link" href={url('/projetos/')}>
           <h2 style="font-size: var(--step-1)">Projetos integradores</h2>
-          <p>Seis entregas que constroem um portfolio.</p>
+          <p>Seis entregas que constroem um portfólio.</p>
         </a>
         <a class="card card--link" href={url('/recursos/')}>
           <h2 style="font-size: var(--step-1)">Recursos</h2>
-          <p>Playlists, documentacao e ferramentas da matriz.</p>
+          <p>Playlists, documentação e ferramentas da matriz.</p>
         </a>
       </div>
     </div>
