@@ -274,25 +274,43 @@ const highlights = [
         </p>
       </div>
 
-      <div class="grid grid--3" style="margin-top: 1.8rem">
-        {
-          projects.map((project) => (
-            <article class="card card--accent">
-              <div class="card__meta">
-                <span class="card__num">PI {project.roman}</span>
-                <span aria-hidden="true">·</span>
-                <span>{project.semester}º semestre</span>
-                <span class="tag tag--outline">{project.hours}h</span>
-              </div>
-              <h3>{project.name}</h3>
-              <p>{project.summary}</p>
-              <a class="card__footer" href={`${url('/projetos/')}#${project.id}`} style="text-decoration: none">
-                <span class="text-sm" style="font-weight: 600">Detalhes do projeto</span>
-                <Icon name="arrow-right" size={16} />
-              </a>
-            </article>
-          ))
-        }
+      <div class="project-carousel" data-carousel>
+        <div
+          class="project-carousel__track"
+          id="projetos-track"
+          data-carousel-track
+          role="region"
+          aria-label="Projetos integradores"
+          tabindex="0"
+        >
+          {
+            projects.map((project) => (
+              <article class="card card--accent">
+                <div class="card__meta">
+                  <span class="card__num">PI {project.roman}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{project.semester}º semestre</span>
+                  <span class="tag tag--outline">{project.hours}h</span>
+                </div>
+                <h3>{project.name}</h3>
+                <p>{project.summary}</p>
+                <a class="card__footer" href={`${url('/projetos/')}#${project.id}`} style="text-decoration: none">
+                  <span class="text-sm" style="font-weight: 600">Detalhes do projeto</span>
+                  <Icon name="arrow-right" size={16} />
+                </a>
+              </article>
+            ))
+          }
+        </div>
+        <button
+          class="project-carousel__next"
+          type="button"
+          data-carousel-next
+          aria-controls="projetos-track"
+          aria-label="Ver próximos projetos"
+        >
+          <Icon name="arrow-right" size={18} />
+        </button>
       </div>
     </div>
   </section>
@@ -319,3 +337,104 @@ const highlights = [
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .project-carousel {
+    position: relative;
+    margin-top: 1.8rem;
+  }
+
+  .project-carousel__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 2 * var(--gap-4)) / 3);
+    gap: var(--gap-4);
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding-block: 0.25rem 0.9rem;
+  }
+
+  .project-carousel__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .project-carousel__track > * {
+    scroll-snap-align: start;
+  }
+
+  .project-carousel__track:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 4px;
+    border-radius: var(--radius);
+  }
+
+  .project-carousel::after {
+    content: '';
+    position: absolute;
+    inset-block: 0 0.9rem;
+    right: 0;
+    width: 4rem;
+    background: linear-gradient(to right, transparent, var(--paper) 85%);
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .project-carousel[data-at-end='true']::after {
+    opacity: 0;
+  }
+
+  .project-carousel__next {
+    position: absolute;
+    top: 50%;
+    right: -0.75rem;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.7rem;
+    height: 2.7rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--shadow-m);
+    cursor: pointer;
+    z-index: 2;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .project-carousel__next:hover {
+    background: var(--surface-2);
+    border-color: var(--line-2);
+  }
+
+  .project-carousel__next:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 1023px) {
+    .project-carousel__track {
+      grid-auto-columns: calc((100% - var(--gap-4)) / 2);
+    }
+  }
+
+  @media (max-width: 700px) {
+    .project-carousel__track {
+      grid-auto-columns: min(86%, 22rem);
+    }
+
+    .project-carousel__next {
+      right: -0.35rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .project-carousel__track {
+      scroll-behavior: auto;
+    }
+  }
+</style>

@@ -78,8 +78,56 @@ function initActiveSection(): void {
   for (const section of sections) observer.observe(section);
 }
 
+function initCarousels(): void {
+  const carousels = [...document.querySelectorAll<HTMLElement>('[data-carousel]')];
+  if (carousels.length === 0) return;
+
+  const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  for (const carousel of carousels) {
+    const track = carousel.querySelector<HTMLElement>('[data-carousel-track]');
+    const next = carousel.querySelector<HTMLButtonElement>('[data-carousel-next]');
+    if (!track || !next) continue;
+
+    const step = () => {
+      const card = track.firstElementChild as HTMLElement | null;
+      const gap = Number.parseFloat(getComputedStyle(track).columnGap) || 0;
+      return card ? card.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
+    };
+
+    const atEnd = () => track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+
+    const update = () => {
+      const end = atEnd();
+      carousel.dataset.atEnd = String(end);
+      next.setAttribute('aria-label', end ? 'Voltar ao início dos projetos' : 'Ver próximos projetos');
+    };
+
+    update();
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+
+    next.addEventListener('click', () => {
+      const behavior: ScrollBehavior = reducedMotion() ? 'auto' : 'smooth';
+      if (atEnd()) {
+        track.scrollTo({ left: 0, behavior });
+      } else {
+        track.scrollBy({ left: step(), behavior });
+      }
+    });
+
+    track.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+      event.preventDefault();
+      const direction = event.key === 'ArrowRight' ? 1 : -1;
+      track.scrollBy({ left: direction * step(), behavior: reducedMotion() ? 'auto' : 'smooth' });
+    });
+  }
+}
+
 export function initShell(): void {
   initMobileNav();
   initBackToTop();
   initActiveSection();
+  initCarousels();
 }

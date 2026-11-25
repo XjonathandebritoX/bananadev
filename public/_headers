@@ -19,7 +19,7 @@
 
   # Content Security Policy
   # Allow inline theme initialization script via hash
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-hrxQKvPgpwcVus/1HgYKOM14frF36SuBj1mhLolL2rk=' 'sha256-CcfhSX2dw1yOUsaJJN00+JUGp8pKw3ES3H8VQ4sH2Aw='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-hrxQKvPgpwcVus/1HgYKOM14frF36SuBj1mhLolL2rk=' 'sha256-RQOC3+vgg9aZdUFuhnneOgU8Xhp5SoEDvkZ4m+BulSY='; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'
 
 /brand/*
   # Allow caching for brand assets
