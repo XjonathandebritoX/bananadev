@@ -94,7 +94,7 @@ npm run check              # typecheck + astro check
 | Comando | Descrição |
 |---------|-----------|
 | `npm run dev` | Inicia servidor de desenvolvimento (Astro) |
-| `npm run build` | Build de produção (inclui `curriculum:check`) |
+| `npm run build` | Build de produção (inclui `curriculum:generate`) |
 | `npm run preview` | Preview do build de produção |
 | `npm run curriculum:generate` | Gera `src/data/curriculum.generated.json` a partir do README |
 | `npm run curriculum:check` | Valida se o README e os dados gerados estão sincronizados |
@@ -103,6 +103,7 @@ npm run check              # typecheck + astro check
 | `npm run test:e2e` | Testes E2E (Playwright) |
 | `npm run test:all` | Pipeline completo: test + build + test:e2e |
 | `npm run audit:links` | Auditoria de links do README e do site |
+| `npm run audit:csp` | Valida se os hashes da CSP cobrem os scripts inline do build |
 
 ## Fluxo de atualização do currículo
 

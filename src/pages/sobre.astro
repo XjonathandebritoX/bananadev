@@ -100,8 +100,9 @@ const stats = [
         <h2 id="como-funciona">Como funciona a formação</h2>
         <p>
           São seis semestres de 400 horas, totalizando 2.400 horas. Cada semestre combina disciplinas teóricas e
-          práticas com um projeto integrador. A stack principal é Python, JavaScript, TypeScript, React, FastAPI,
-          PostgreSQL, Git/GitHub e Docker. Outras tecnologias ficam nas especializações opcionais.
+          práticas com um projeto integrador. A stack principal é
+          {curriculum.meta.stack.slice(0, -1).join(', ')} e {curriculum.meta.stack.at(-1)}. Outras tecnologias ficam
+          nas especializações opcionais.
         </p>
         <p>
           A conclusão de uma disciplina exige estudar a ementa, resolver exercícios sem copiar, implementar pelo

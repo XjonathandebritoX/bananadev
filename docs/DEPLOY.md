@@ -7,7 +7,7 @@ Este documento descreve o processo de deploy verificado para o #BananaDev.
 - **Tipo**: Site estático (Astro `output: "static"`)
 - **Build**: `npm run build` → gera pasta `dist/`
 - **Branches**: `main` = produção; PRs = preview
-- **Deploy automático**: GitHub Actions → Cloudflare Pages (preferencial) ou GitHub Pages
+- **Deploy automático**: Cloudflare Pages (Git integration, preferencial) ou GitHub Pages (workflow próprio)
 
 ---
 
@@ -56,21 +56,14 @@ Este documento descreve o processo de deploy verificado para o #BananaDev.
 3. Configure DNS (CNAME para `<project>.pages.dev` ou A/AAAA para Cloudflare)
 4. HTTPS automático (certificado gerenciado)
 
-### Headers de segurança (configurados via `_headers` ou painel)
+### Headers de segurança
 
-O build já gera `dist/_headers` se você criar `public/_headers`:
+Os headers ficam versionados em `public/_headers` e são copiados automaticamente para `dist/_headers`:
 
-```text
-# public/_headers (copiado para dist/)
-/*
-  X-Frame-Options: DENY
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self'
-```
+- `Strict-Transport-Security`, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` e `Permissions-Policy`
+- `Content-Security-Policy` restritiva, com `script-src` baseado em hashes SHA-256 (sem `'unsafe-inline'`)
 
-> **Nota**: O CSP acima permite `'unsafe-inline'` para scripts/estilos inline do Astro. Ajuste se remover inline scripts.
+> **Importante**: qualquer alteração em scripts inline emitidos pelo Astro muda o hash e exige atualizar `public/_headers`. Valide com `npm run audit:csp` após o build — a CI executa essa verificação automaticamente e falha se algum script inline ficar sem autorização.
 
 ---
 
@@ -167,6 +160,7 @@ Antes de fazer push na `main`:
 - [ ] `npm run check` passa (typecheck + astro check)
 - [ ] `npm run test` passa (testes unitários)
 - [ ] `npm run build` gera `dist/` sem erros
+- [ ] `npm run audit:csp` valida os hashes da CSP
 - [ ] `npm run test:e2e` passa (opcional, mas recomendado)
 - [ ] `npm run audit:links` roda sem erros críticos
 - [ ] Preview local (`npm run preview`) funciona
@@ -221,7 +215,7 @@ Reverter o commit na `main` (`git revert <sha> && git push`) → novo deploy aut
 | Build falha "Could not resolve" | Import path errado | Verifique `../../` vs `../../../` em subdiretórios; use alias `@/` |
 | CSS não carrega | `BASE_PATH` incorreto | Confira `BASE_PATH` no env de build = subpath do deploy |
 | Imagens 404 | Assets não copiados | Verifique `public/` → `dist/` (Astro copia automaticamente) |
-| Tema não persiste | CSP bloqueia inline script | Ajuste `Content-Security-Policy` para permitir `'unsafe-inline'` em `script-src` |
+| Tema não persiste | CSP bloqueia inline script | Recalcule os hashes e atualize `script-src` em `public/_headers`; valide com `npm run audit:csp` |
 | Sitemap com URLs erradas | `SITE_URL`/`BASE_PATH` | Defina corretamente no env de build |
 | Preview PR não funciona | Cloudflare App não instalado | Instale o Cloudflare Pages GitHub App na org/repo |
 

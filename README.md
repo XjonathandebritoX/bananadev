@@ -10,7 +10,7 @@
 **Estrutura:** 6 semestres de 400 horas  
 **Projetos integradores:** 6  
 **Versão consolidada:** 20 de novembro de 2026  
-**Stack principal:** Python, JavaScript, TypeScript, React, FastAPI, PostgreSQL, Git/GitHub e Docker  
+**Stack principal:** Python, JavaScript, TypeScript, HTML/CSS, React, FastAPI, SQLAlchemy, PostgreSQL, pytest, Docker, Linux, Git/GitHub e GitHub Actions  
 **Idioma:** materiais audiovisuais prioritariamente em português brasileiro (PT-BR).
 
 Percurso independente de estudo, organizado por competências, pré-requisitos, prática e projetos públicos. A carga horária é uma estimativa de dedicação autodidata; não equivale a uma graduação reconhecida nem concede diploma de nível superior.

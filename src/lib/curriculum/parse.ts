@@ -497,10 +497,16 @@ export function parseCurriculum(markdown: string): Curriculum {
     const name = item[1].trim();
     const text = item[2].trim();
     const links = extractLinks(text, references, problems);
+    const description = cleanText(
+      text
+        .replace(/\s*\[[^\]]+\]\[[a-z0-9_]+\]\.?/gi, '')
+        .replace(/\s+e\s*\.?\s*$/i, '')
+        .replace(/[\s,;:]+$/, ''),
+    );
     specializations.push({
       id: slugify(name),
       name,
-      description: cleanText(text.replace(/\s*\[[^\]]+\]\[[a-z0-9_]+\]\.?\s*$/gi, '')).trim(),
+      description,
       resources: toResources(links),
       technologies: deriveTechnologies(name, text),
     });

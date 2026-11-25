@@ -3,14 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import { getCurriculum } from '../lib/curriculum/load';
 import { SITE, url } from '../lib/site';
-import { TECH_TAGS } from '../lib/curriculum/taxonomy';
 
 const curriculum = getCurriculum();
 const { meta, semesters, projects, studyPlans } = curriculum;
 const totalDisciplineHours = curriculum.disciplines.reduce((total, discipline) => total + discipline.hours, 0);
-const stackLabels = TECH_TAGS.filter((tag) =>
-  ['python', 'javascript', 'typescript', 'react', 'fastapi', 'sql', 'git', 'docker', 'tests', 'security'].includes(tag.id),
-);
 
 const method = [
   {
@@ -260,8 +256,7 @@ const highlights = [
         </p>
       </div>
       <div class="tags" style="gap: 0.5rem">
-        {stackLabels.map((tag) => <span class="tag tag--yellow">{tag.label}</span>)}
-        <span class="tag">Git e GitHub</span>
+        {meta.stack.map((tag) => <span class="tag tag--yellow">{tag}</span>)}
       </div>
 
       <div class="grid grid--3" style="margin-top: 2.5rem">
