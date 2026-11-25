@@ -258,10 +258,25 @@ const highlights = [
       <div class="tags" style="gap: 0.5rem">
         {meta.stack.map((tag) => <span class="tag tag--yellow">{tag}</span>)}
       </div>
+    </div>
+  </section>
 
-      <div class="grid grid--3" style="margin-top: 2.5rem">
+  <section class="section section--tight" aria-labelledby="projetos">
+    <div class="container">
+      <div class="section__head">
+        <div class="stack" style="gap: 0.8rem">
+          <p class="eyebrow">Aprender por entrega</p>
+          <h2 id="projetos">Seis projetos integradores</h2>
+        </div>
+        <p>
+          Um projeto por semestre, do sistema em console ao produto open source em produção.
+          <a href={url('/projetos/')}>Ver detalhes e critérios</a>.
+        </p>
+      </div>
+
+      <div class="grid grid--3" style="margin-top: 1.8rem">
         {
-          projects.slice(0, 3).map((project) => (
+          projects.map((project) => (
             <article class="card card--accent">
               <div class="card__meta">
                 <span class="card__num">PI {project.roman}</span>
@@ -271,7 +286,7 @@ const highlights = [
               </div>
               <h3>{project.name}</h3>
               <p>{project.summary}</p>
-              <a class="card__footer" href={url('/projetos/')} style="text-decoration: none">
+              <a class="card__footer" href={`${url('/projetos/')}#${project.id}`} style="text-decoration: none">
                 <span class="text-sm" style="font-weight: 600">Detalhes do projeto</span>
                 <Icon name="arrow-right" size={16} />
               </a>
